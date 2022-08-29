@@ -1,7 +1,10 @@
 const express = require("express");
+const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
-const mongoConnect = require("./util/database").mongoConnect;
 const mongoose = require("mongoose");
+
+dotenv.config();
+const env = process.env;
 
 const app = express();
 const apiRouter = express.Router();
@@ -17,11 +20,9 @@ app.use(express.json());
 app.use("/api", apiRouter);
 
 mongoose
-	.connect(
-		"mongodb+srv://Carson:nodecomplete@cluster0.pnmyf.mongodb.net/cookbook?retryWrites=true"
-	)
+	.connect(env.MONGODB_URL)
 	.then((result) => {
-		app.listen(9001);
+		app.listen(env.API_PORT);
 	})
 	.catch((err) => {
 		console.log(err);
