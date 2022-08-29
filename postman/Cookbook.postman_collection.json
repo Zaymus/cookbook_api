@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "8c26f83a-1da1-4862-83b7-1c0beb121d38",
+		"name": "Cookbook",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23053875"
+	},
+	"item": [
+		{
+			"name": "health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cookbook_url}}/api/health",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "newRecipe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": \"These are the steps to make the recipe\",\r\n    \"imageUrl\": \"https://www.thisistheimageurl.com/image1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cookbook_url}}/api/recipe",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"recipe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetchRecipes",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"test name\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cookbook_url}}/api/recipe",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"recipe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetchRecipeById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cookbook_url}}/api/recipe/630ce4133537ec7e8c438a3b",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"recipe",
+						"630ce4133537ec7e8c438a3b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateRecipe",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"630c1bedf5b815ea84c2fa86\",\r\n    \"name\": \"Peanut Sauce\",\r\n    \"numServings\": 4,\r\n    \"steps\": \"steps for peanut sauce\",\r\n    \"imageUrl\": \"new image url\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cookbook_url}}/api/recipe",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"recipe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteRecipe",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"630ce5072e0db3476950ae52\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cookbook_url}}/api/recipe",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"recipe"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
