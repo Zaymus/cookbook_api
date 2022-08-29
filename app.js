@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
+const middleware = require("./middleware");
 const mongoose = require("mongoose");
 
 dotenv.config();
@@ -17,6 +18,7 @@ apiRouter.use(recipeRouter);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(middleware);
 app.use("/api", apiRouter);
 
 mongoose
