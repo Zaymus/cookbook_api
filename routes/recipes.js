@@ -1,7 +1,7 @@
 const express = require("express");
-const recipe = require("../models/recipe");
 const router = express.Router();
 const Recipe = require("../models/recipe");
+const RECIPE_STATUS = require("../util/constants").RECIPE_STATUS;
 
 router.post("/recipe", (req, res, next) => {
 	const name = req.body.name;
@@ -18,12 +18,14 @@ router.post("/recipe", (req, res, next) => {
 	recipe
 		.save()
 		.then((result) => {
-			console.log("Saved Recipe!");
-			res.json({ ...req.json, status: "Saved" });
+			res.json({
+				...req.json,
+				isSuccessful: true,
+				status: RECIPE_STATUS.SAVED,
+			});
 		})
 		.catch((err) => {
-			console.log(err);
-			res.json({ ...req.json, isSuccessful: false, err });
+			res.json({ ...req.json, err });
 		});
 });
 
@@ -31,12 +33,17 @@ router.get("/recipe/:recipeId", (req, res, next) => {
 	const id = req.params.recipeId;
 	Recipe.findById(id)
 		.then((recipe) => {
-			if (recipe == null) res.json({ ...req.json, isSuccessful: false });
-			res.json({ ...req.json, wasFound: true, recipe });
+			if (recipe == null) res.json({ ...req.json });
+			res.json({
+				...req.json,
+				isSuccessful: true,
+				wasFound: true,
+				status: RECIPE_STATUS.RETRIEVED,
+				recipe,
+			});
 		})
 		.catch((err) => {
-			console.log(err);
-			res.json({ ...req.json, isSuccessful: false, err });
+			res.json({ ...req.json, err });
 		});
 });
 
@@ -44,12 +51,17 @@ router.get("/recipe", (req, res, next) => {
 	const name = req.body.name;
 	Recipe.find({ name: name })
 		.then((recipe) => {
-			if (!recipe.length) res.json({ ...req.json, isSuccessful: false });
-			res.json({ ...req.json, wasFound: true, recipe });
+			if (!recipe.length) res.json({ ...req.json });
+			res.json({
+				...req.json,
+				isSuccessful: true,
+				wasFound: true,
+				status: RECIPE_STATUS.RETRIEVED,
+				recipe,
+			});
 		})
 		.catch((err) => {
-			console.log(err);
-			res.json({ ...req.json, isSuccessful: false, err });
+			res.json({ ...req.json, err });
 		});
 });
 
@@ -68,17 +80,20 @@ router.patch("/recipe", (req, res, next) => {
 			recipe
 				.save()
 				.then((result) => {
-					console.log("Updated Recipe!");
-					res.json({ ...req.json, wasFound: true, wasUpdated: true });
+					res.json({
+						...req.json,
+						isSuccessful: true,
+						wasFound: true,
+						wasUpdated: true,
+						status: RECIPE_STATUS.UPDATED,
+					});
 				})
 				.catch((err) => {
-					console.log(err);
-					res.json({ ...req.json, isSuccessful: false, err });
+					res.json({ ...req.json, err });
 				});
 		})
 		.catch((err) => {
-			console.log(err);
-			res.json({ ...req.json, isSuccessful: false, err });
+			res.json({ ...req.json, err });
 		});
 });
 
@@ -86,11 +101,16 @@ router.put("/recipe", (req, res, next) => {
 	const id = req.body.id;
 	Recipe.deleteOne({ _id: id })
 		.then((result) => {
-			res.json({ ...req.json, wasFound: true, wasDeleted: true });
+			res.json({
+				...req.json,
+				isSuccessful: true,
+				wasFound: true,
+				wasDeleted: true,
+				status: RECIPE_STATUS.DELETED,
+			});
 		})
 		.catch((err) => {
-			console.log(err);
-			res.json({ ...req.json, isSuccessful: false, err });
+			res.json({ ...req.json, err });
 		});
 });
 
