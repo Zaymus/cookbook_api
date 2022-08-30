@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8c26f83a-1da1-4862-83b7-1c0beb121d38",
+		"_postman_id": "c368bca1-a9ab-489a-86a4-6276f5d67a84",
 		"name": "Cookbook",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23053875"
@@ -55,13 +55,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"pm.globals.set(\"expectedResponse\", {\r",
-							"    \"isSuccessful\": true,\r",
-							"    \"wasFound\": false,\r",
-							"    \"wasUpdated\": false,\r",
-							"    \"wasDeleted\": false,\r",
-							"    \"status\": \"Saved\"\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -78,10 +72,7 @@
 							"if (pm.response.code == 200)\r",
 							"{\r",
 							"    pm.test(\"Creation was successful\", () => {\r",
-							"        pm.expect(jsonData.isSuccessful).to.equal(true);\r",
-							"    });\r",
-							"    pm.test(\"Response is as expected\", () => {\r",
-							"        pm.expect(jsonData).to.deep.equal(pm.globals.get(\"expectedResponse\"));\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
 							"    });\r",
 							"    pm.test(\"Server responded in under 1000ms\", () => {\r",
 							"        pm.expect(pm.response.responseTime).below(1000);\r",
@@ -97,7 +88,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": \"These are the steps to make the recipe\",\r\n    \"imageUrl\": \"https://www.thisistheimageurl.com/image1\"\r\n}",
+					"raw": "{\r\n    \"name\": \"test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": \"These are the steps to make the recipe\",\r\n    \"imageUrl\": \"https://www.thisistheimageurl.com/image1\",\r\n    \"visibility\": \"Private\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -133,10 +124,10 @@
 							"if (pm.response.code == 200)\r",
 							"{\r",
 							"    pm.test(\"Retrieval was successful\", () => {\r",
-							"        pm.expect(jsonData.isSuccessful).to.equal(true);\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
 							"    });\r",
 							"    pm.test(\"Recipe was found\", () => {\r",
-							"        pm.expect(jsonData.wasFound).to.equal(true);\r",
+							"        pm.expect(jsonData.wasFound).to.be.true;\r",
 							"    });\r",
 							"    pm.test(\"Recipes were retrieved\", () => {\r",
 							"        pm.expect(jsonData.recipe).to.be.an(\"array\").that.is.not.empty;\r",
@@ -200,10 +191,10 @@
 							"if (pm.response.code == 200)\r",
 							"{\r",
 							"    pm.test(\"Retrieval was successful\", () => {\r",
-							"        pm.expect(jsonData.isSuccessful).to.equal(true);\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
 							"    });\r",
 							"    pm.test(\"Recipe was found\", () => {\r",
-							"        pm.expect(jsonData.wasFound).to.equal(true);\r",
+							"        pm.expect(jsonData.wasFound).to.be.true;\r",
 							"    });\r",
 							"    pm.test(\"Only one recipe retrieved\", () => {\r",
 							"        pm.expect(jsonData.recipe).to.be.an(\"object\");\r",
@@ -270,16 +261,15 @@
 							"pm.test(\"Status code is 200 OK\", () => {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"if (pm.response.code == 200)\r",
-							"{\r",
+							"if (pm.response.code == 200) {\r",
 							"    pm.test(\"Request was successful\", () => {\r",
-							"        pm.expect(jsonData.isSuccessful).to.equal(true);\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
 							"    });\r",
 							"    pm.test(\"Recipe was found\", () => {\r",
-							"        pm.expect(jsonData.wasFound).to.equal(true);\r",
+							"        pm.expect(jsonData.wasFound).to.be.true;\r",
 							"    });\r",
 							"    pm.test(\"Recipe was updated\", () => {\r",
-							"        pm.expect(jsonData.wasUpdated).to.equal(true);\r",
+							"        pm.expect(jsonData.wasUpdated).to.be.true;\r",
 							"    });\r",
 							"    pm.test(\"Server responded in under 1000ms\", () => {\r",
 							"        pm.expect(pm.response.responseTime).below(1000);\r",
@@ -339,7 +329,7 @@
 							"if (pm.response.code == 200)\r",
 							"{\r",
 							"    pm.test(\"Request was successful\", () => {\r",
-							"        pm.expect(jsonData.isSuccessful).to.equal(true);\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
 							"    });\r",
 							"    if(jsonData.status != \"Deleted\")\r",
 							"    {\r",
@@ -349,10 +339,10 @@
 							"    }\r",
 							"    else {\r",
 							"        pm.test(\"Recipe was found\", () => {\r",
-							"            pm.expect(jsonData.wasFound).to.equal(true);\r",
+							"            pm.expect(jsonData.wasFound).to.be.true;\r",
 							"        });\r",
 							"        pm.test(\"Recipe was deleted or does not exist\", () => {\r",
-							"            pm.expect(jsonData.wasDeleted).to.equal(true)\r",
+							"            pm.expect(jsonData.wasDeleted).to.be.true;\r",
 							"        });\r",
 							"    }\r",
 							"    pm.test(\"Server responded in under 500ms\", pm.response.responseTime <= 500);\r",
