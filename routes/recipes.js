@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Recipe = require("../models/recipe");
-const RECIPE_STATUS = require("../util/constants").RECIPE_STATUS;
+const CRUD_STATUS = require("../util/constants").CRUD_STATUS;
 
 router.post("/recipe", (req, res, next) => {
 	const name = req.body.name;
@@ -21,7 +21,7 @@ router.post("/recipe", (req, res, next) => {
 			res.json({
 				...req.json,
 				isSuccessful: true,
-				status: RECIPE_STATUS.SAVED,
+				status: CRUD_STATUS.SAVED,
 			});
 		})
 		.catch((err) => {
@@ -40,7 +40,7 @@ router.get("/recipe/:recipeId", (req, res, next) => {
 					...req.json,
 					isSuccessful: true,
 					wasFound: true,
-					status: RECIPE_STATUS.RETRIEVED,
+					status: CRUD_STATUS.RETRIEVED,
 					recipe,
 				});
 			}
@@ -61,7 +61,7 @@ router.get("/recipe", (req, res, next) => {
 					...req.json,
 					isSuccessful: true,
 					wasFound: true,
-					status: RECIPE_STATUS.RETRIEVED,
+					status: CRUD_STATUS.RETRIEVED,
 					recipe,
 				});
 			}
@@ -91,7 +91,7 @@ router.patch("/recipe", (req, res, next) => {
 						isSuccessful: true,
 						wasFound: true,
 						wasUpdated: true,
-						status: RECIPE_STATUS.UPDATED,
+						status: CRUD_STATUS.UPDATED,
 					});
 				})
 				.catch((err) => {
@@ -119,7 +119,7 @@ router.put("/recipe", (req, res, next) => {
 					isSuccessful: true,
 					wasFound: true,
 					wasDeleted: true,
-					status: RECIPE_STATUS.DELETED,
+					status: CRUD_STATUS.DELETED,
 				});
 			}
 		})
