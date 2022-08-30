@@ -33,14 +33,17 @@ router.get("/recipe/:recipeId", (req, res, next) => {
 	const id = req.params.recipeId;
 	Recipe.findById(id)
 		.then((recipe) => {
-			if (recipe == null) res.json({ ...req.json });
-			res.json({
-				...req.json,
-				isSuccessful: true,
-				wasFound: true,
-				status: RECIPE_STATUS.RETRIEVED,
-				recipe,
-			});
+			if (recipe == null) {
+				res.json({ ...req.json });
+			} else {
+				res.json({
+					...req.json,
+					isSuccessful: true,
+					wasFound: true,
+					status: RECIPE_STATUS.RETRIEVED,
+					recipe,
+				});
+			}
 		})
 		.catch((err) => {
 			res.json({ ...req.json, err });
@@ -51,14 +54,17 @@ router.get("/recipe", (req, res, next) => {
 	const name = req.body.name;
 	Recipe.find({ name: name })
 		.then((recipe) => {
-			if (!recipe.length) res.json({ ...req.json });
-			res.json({
-				...req.json,
-				isSuccessful: true,
-				wasFound: true,
-				status: RECIPE_STATUS.RETRIEVED,
-				recipe,
-			});
+			if (!recipe.length) {
+				res.json({ ...req.json });
+			} else {
+				res.json({
+					...req.json,
+					isSuccessful: true,
+					wasFound: true,
+					status: RECIPE_STATUS.RETRIEVED,
+					recipe,
+				});
+			}
 		})
 		.catch((err) => {
 			res.json({ ...req.json, err });
@@ -101,13 +107,21 @@ router.put("/recipe", (req, res, next) => {
 	const id = req.body.id;
 	Recipe.deleteOne({ _id: id })
 		.then((result) => {
-			res.json({
-				...req.json,
-				isSuccessful: true,
-				wasFound: true,
-				wasDeleted: true,
-				status: RECIPE_STATUS.DELETED,
-			});
+			if (result.deletedCount == 0) {
+				res.json({
+					...req.json,
+					isSuccessful: true,
+					status: "No record to delete",
+				});
+			} else {
+				res.json({
+					...req.json,
+					isSuccessful: true,
+					wasFound: true,
+					wasDeleted: true,
+					status: RECIPE_STATUS.DELETED,
+				});
+			}
 		})
 		.catch((err) => {
 			res.json({ ...req.json, err });
