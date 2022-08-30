@@ -1,4 +1,4 @@
-RECIPE_STATUS = {
+CRUD_STATUS = {
 	SAVED: "Saved",
 	RETRIEVED: "Retrieved",
 	UPDATED: "Updated",
@@ -12,4 +12,4 @@ SERVER_STATUS = {
 
 exports.SERVER_STATUS = SERVER_STATUS;
 
-exports.RECIPE_STATUS = RECIPE_STATUS;
+exports.CRUD_STATUS = CRUD_STATUS;
