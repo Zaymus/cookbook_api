@@ -12,9 +12,11 @@ const apiRouter = express.Router();
 
 const serverRouter = require("./routes/server");
 const recipeRouter = require("./routes/recipes");
+const userRouter = require("./routes/users");
 
 apiRouter.use(serverRouter);
 apiRouter.use(recipeRouter);
+apiRouter.use(userRouter);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
