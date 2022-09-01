@@ -4,17 +4,7 @@ const Recipe = require("../models/recipe");
 const CRUD_STATUS = require("../util/constants").CRUD_STATUS;
 
 router.post("/recipe", (req, res, next) => {
-	const name = req.body.name;
-	const numServings = req.body.numServings;
-	const steps = req.body.steps;
-	const imageUrl = req.body.imageUrl;
-
-	const recipe = new Recipe({
-		name: name,
-		numServings: numServings,
-		steps: steps,
-		imageUrl: imageUrl,
-	});
+	const recipe = new Recipe({ ...req.body });
 	recipe
 		.save()
 		.then((result) => {
@@ -72,31 +62,15 @@ router.get("/recipe", (req, res, next) => {
 });
 
 router.patch("/recipe", (req, res, next) => {
-	const id = req.body.id;
-	const name = req.body.name;
-	const numServings = req.body.numServings;
-	const steps = req.body.steps;
-	const imageUrl = req.body.imageUrl;
-	Recipe.findById(id)
-		.then((recipe) => {
-			recipe.name = name;
-			recipe.numServings = numServings;
-			recipe.steps = steps;
-			recipe.imageUrl = imageUrl;
-			recipe
-				.save()
-				.then((result) => {
-					res.json({
-						...req.json,
-						isSuccessful: true,
-						wasFound: true,
-						wasUpdated: true,
-						status: CRUD_STATUS.UPDATED,
-					});
-				})
-				.catch((err) => {
-					res.json({ ...req.json, err });
-				});
+	Recipe.updateOne({ id: req.body.id }, { ...req.body })
+		.then((result) => {
+			res.json({
+				...req.json,
+				isSuccessful: true,
+				wasFound: true,
+				wasUpdated: true,
+				status: CRUD_STATUS.UPDATED,
+			});
 		})
 		.catch((err) => {
 			res.json({ ...req.json, err });
