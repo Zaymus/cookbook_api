@@ -11,7 +11,7 @@ SERVER_STATUS = {
 };
 
 const userValidation = {
-	EMAIL_FORMAT: new RegExp(/^([A-Za-z0-9])+@([A-Za-z0-9])+.([A-Za-z]{2,4})$/),
+	EMAIL_FORMAT: new RegExp(/^([A-Za-z0-9])+@([A-Za-z0-9])+..([A-Za-z]{2,4})$/),
 	USER_PREFIX_LIST: ["Mr.", "Ms.", "Mrs.", "Miss.", "Dr."],
 	USER_SUFFIX_LIST: ["II", "III", "IV", "V", "Esq.", "Sr.", "Jr."],
 	NAME_FORMAT: /^[a-zA-Z]{2,40}$/,
