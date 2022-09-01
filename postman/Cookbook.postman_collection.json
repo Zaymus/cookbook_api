@@ -88,7 +88,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": \"These are the steps to make the recipe\",\r\n    \"imageUrl\": \"https://www.thisistheimageurl.com/image1\",\r\n    \"visibility\": \"Private\"\r\n}",
+					"raw": "{\r\n    \"name\": \"test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": [\"step 1\", \"step 2\", \"step 3\", \"step 4\"],\r\n    \"imageUrl\": \"https://www.thisistheimageurl.com/image1\",\r\n    \"owner\": \"630ea999f113a432c7007993\",\r\n    \"visibility\": \"Private\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -285,7 +285,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"{{recipe_id}}\",\r\n    \"name\": \"updated test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": \"updated steps\",\r\n    \"imageUrl\": \"new image url\"\r\n}",
+					"raw": "{\r\n    \"id\": \"{{recipe_id}}\",\r\n    \"name\": \"updated test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": \"updated steps\",\r\n    \"imageUrl\": \"new image url\",\r\n    \"owner\": \"{{user_id}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -372,6 +372,350 @@
 					"path": [
 						"api",
 						"recipe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "newUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"if (pm.response.code == 200)\r",
+							"{\r",
+							"    pm.test(\"Creation was successful\", () => {\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"Server responded in under 1000ms\", () => {\r",
+							"        pm.expect(pm.response.responseTime).below(1000);\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"testDelete@test.com\",\r\n    \"name\": {\r\n        \"prefix\": \"Mr.\",\r\n        \"firstName\": \"Victor\",\r\n        \"middleName\": \"Carson\",\r\n        \"lastName\": \"Brown\"\r\n    },\r\n    \"password\": \"Abc12345!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cookbook_url}}/api/user",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetchUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"var requestData = JSON.parse(pm.request.body.raw);\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"if (pm.response.code == 200)\r",
+							"{\r",
+							"    pm.test(\"Retrieval was successful\", () => {\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"User was found\", () => {\r",
+							"        pm.expect(jsonData.wasFound).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"User was retrieved\", () => {\r",
+							"        pm.expect(jsonData.user).to.be.an(\"object\").that.is.not.empty;\r",
+							"    });\r",
+							"    pm.test(\"Retrieved user email matches query\", () => {\r",
+							"        pm.expect(jsonData.user.email).to.be.equal(requestData.email);\r",
+							"    });\r",
+							"    pm.test(\"Server responded in under 5000ms\", () => {\r",
+							"        pm.expect(pm.response.responseTime).below(5000);\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"testDelete@test.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cookbook_url}}/api/user",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetchUserById",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"var requestData = pm.request.body;\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"if (pm.response.code == 200)\r",
+							"{\r",
+							"    pm.test(\"Retrieval was successful\", () => {\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"User was found\", () => {\r",
+							"        pm.expect(jsonData.wasFound).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"Only one recipe retrieved\", () => {\r",
+							"        pm.expect(jsonData.user).to.be.an(\"object\");\r",
+							"    });\r",
+							"    if (Array.isArray(jsonData.user) == false)\r",
+							"    {\r",
+							"        pm.test(\"Retrieved recipe id matches route\", () => {\r",
+							"            pm.expect(jsonData.user.id).to.be.equal(pm.request.toJSON().url[2]);\r",
+							"        });\r",
+							"        pm.test(\"Server responded in under 500ms\", () => {\r",
+							"            pm.expect(pm.response.responseTime).below(500);\r",
+							"        });\r",
+							"    }\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cookbook_url}}/api/user/{{user_id}}",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"if (pm.response.code == 200) {\r",
+							"    pm.test(\"Request was successful\", () => {\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"User was found\", () => {\r",
+							"        pm.expect(jsonData.wasFound).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"User was updated\", () => {\r",
+							"        pm.expect(jsonData.wasUpdated).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"Server responded in under 1000ms\", () => {\r",
+							"        pm.expect(pm.response.responseTime).below(1000);\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"{{user_id}}\",\r\n    \"email\": \"updatedTest@test.com\",\r\n    \"name\": {\r\n        \"prefix\": \"Mr.\",\r\n        \"firstName\": \"Victor\",\r\n        \"middleName\": \"Carson\",\r\n        \"lastName\": \"Brown\"\r\n    },\r\n    \"recipes\": \"630fd1c6927570d2dd476403\",\r\n    \"password\": \"Abc12345!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cookbook_url}}/api/user",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"if (pm.response.code == 200)\r",
+							"{\r",
+							"    pm.test(\"Request was successful\", () => {\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
+							"    });\r",
+							"    if(jsonData.status != \"Deleted\")\r",
+							"    {\r",
+							"        pm.test(\"No User found status\", () => {\r",
+							"            pm.expect(jsonData.status).to.equal(\"No record to delete\");\r",
+							"        });\r",
+							"    }\r",
+							"    else {\r",
+							"        pm.test(\"User was found\", () => {\r",
+							"            pm.expect(jsonData.wasFound).to.be.true;\r",
+							"        });\r",
+							"        pm.test(\"User was deleted or does not exist\", () => {\r",
+							"            pm.expect(jsonData.wasDeleted).to.be.true;\r",
+							"        });\r",
+							"    }\r",
+							"    pm.test(\"Server responded in under 500ms\", pm.response.responseTime <= 500);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"6310068aee4e852497bc84b0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cookbook_url}}/api/user",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetchUserRecipes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"if (pm.response.code == 200)\r",
+							"{\r",
+							"    pm.test(\"Request was successful\", () => {\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"User was found\", () => {\r",
+							"        pm.expect(jsonData.wasFound).to.be.true;\r",
+							"   });\r",
+							"    pm.test(\"Recipes were retrieved\", () => {\r",
+							"        pm.expect(jsonData.status).to.equal(\"Retrieved\");\r",
+							"    });\r",
+							"    pm.test(\"Recipes property is an array\", () => {\r",
+							"        pm.expect(jsonData.recipes).to.be.an(\"array\");\r",
+							"    });\r",
+							"    pm.test(\"Recipes have data\", () => {\r",
+							"        pm.expect(jsonData.recipes.length).to.be.greaterThan(0);\r",
+							"    });\r",
+							"}\r",
+							"pm.test(\"Server responded in under 500ms\", pm.response.responseTime <= 500);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cookbook_url}}/api/user/{{user_id}}/recipes",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"{{user_id}}",
+						"recipes"
 					]
 				}
 			},
