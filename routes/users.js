@@ -6,8 +6,6 @@ const CRUD_STATUS = require("../util/constants").CRUD_STATUS;
 const dotenv = require("dotenv");
 const axios = require("axios");
 const bcrypt = require("bcryptjs");
-const { userValidation } = require("../util/constants");
-const { default: mongoose } = require("mongoose");
 
 router.post("/user/validate", (req, res, next) => {
 	const { email, name, password } = req.body;
