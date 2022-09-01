@@ -54,8 +54,9 @@ userSchema.statics.verifyName = (name) => {
 	const { prefix, firstName, middleName, lastName, suffix } = name;
 	isValidName =
 		userValidation.NAME_FORMAT.test(firstName) &&
-		userValidation.NAME_FORMAT.test(middleName) &&
-		userValidation.NAME_FORMAT.test(userValidation.lastName);
+		userValidation.NAME_FORMAT.test(lastName);
+	if (middleName.length > 0 && isValidName)
+		isValidName = userValidation.NAME_FORMAT.test(middleName);
 
 	if (prefix?.length > 0) {
 		var prefixList = userValidation.USER_PREFIX_LIST.filter((p) => {
