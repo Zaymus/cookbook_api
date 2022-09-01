@@ -200,33 +200,39 @@ router.put("/user", (req, res, next) => {
 		});
 });
 
-router.get("/user/recipes/:userId", (req, res, next) => {
+router.get("/user/:userId/recipes", (req, res, next) => {
 	const id = req.params.userId;
 	User.findById(id)
 		.then((user) => {
 			if (user == null) {
 				res.json({ ...req.json });
 			} else {
+				let recipeList = [];
 				let recipeIds = user.recipes;
 				if (user.recipes.length > 0) {
-					let recipes = [];
 					recipeIds.forEach((r) => {
 						Recipe.findById(r.toString())
 							.then((recipe) => {
-								recipes.push(recipe);
+								recipeList.push(recipe);
+							})
+							.then((result) => {
+								if (recipeList.length > 0) {
+									res.json({
+										...req.json,
+										isSuccessful: true,
+										wasFound: true,
+										status: CRUD_STATUS.RETRIEVED,
+										recipes: recipeList,
+									});
+								} else {
+									res.json({ ...req.json });
+								}
 							})
 							.catch((err) => {
 								console.log(
 									`Could not find recipe with an id of ${r.toString()}`
 								);
 							});
-					});
-
-					res.json({
-						...req.json,
-						isSuccessful: recipes.length > 0,
-						wasFound: isSuccessful,
-						status: isSuccessful ? CRUD_STATUS.RETRIEVED : CRUD_STATUS.ERROR,
 					});
 				}
 			}
