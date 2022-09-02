@@ -41,7 +41,7 @@ router.get("/recipe/:recipeId", (req, res, next) => {
 });
 
 router.get("/recipe", (req, res, next) => {
-	const name = req.body.name;
+	const name = req.query.name;
 	Recipe.find({ name: name })
 		.then((recipe) => {
 			if (!recipe.length) {
@@ -78,7 +78,7 @@ router.patch("/recipe", (req, res, next) => {
 });
 
 router.put("/recipe", (req, res, next) => {
-	const id = req.body.id;
+	const id = req.query.id;
 	Recipe.deleteOne({ _id: id })
 		.then((result) => {
 			if (result.deletedCount == 0) {
