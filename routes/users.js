@@ -81,7 +81,7 @@ router.post("/user", (req, res, next) => {
 });
 
 router.get("/user", (req, res, next) => {
-	const email = req.body.email;
+	const email = req.query.email;
 
 	User.findOne({ email: email })
 		.then((user) => {
