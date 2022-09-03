@@ -21,7 +21,7 @@ router.post("/user/validate", (req, res, next) => {
 		if (!isEmailValid) errors.push("Email is invalid");
 		if (!isNameValid) errors.push("Name is invalid");
 		if (!isPasswordValid) errors.push("Password is invalid");
-		res.json({ isDataVerified: isValid, err: errors });
+		res.status(400).json({ isDataVerified: isValid, err: errors });
 	}
 });
 
@@ -56,25 +56,27 @@ router.post("/user", (req, res, next) => {
 											});
 										})
 										.catch((err) => {
-											res.json({ ...req.json, err });
+											res.status(400).json({ ...req.json, err });
 										});
 								} else {
-									res.json({ ...req.json, err: "Email already in use" });
+									res
+										.status(400)
+										.json({ ...req.json, err: "Email already in use" });
 								}
 							})
 							.catch((err) => {
-								res.json({ ...req.json, err });
+								res.status(400).json({ ...req.json, err });
 							});
 					} else {
-						res.json({ ...req.json, err: "Invalid data" });
+						res.status(400).json({ ...req.json, err: "Invalid data" });
 					}
 				})
 				.catch((err) => {
-					res.json({ ...req.json, err });
+					res.status(400).json({ ...req.json, err });
 				});
 		})
 		.catch((err) => {
-			res.json({ ...req.json, err });
+			res.status(400).json({ ...req.json, err });
 		});
 });
 
@@ -84,7 +86,7 @@ router.get("/user", (req, res, next) => {
 	User.findOne({ email: email })
 		.then((user) => {
 			if (user == null) {
-				res.json({ ...req.json, err: "User not found" });
+				res.status(400).json({ ...req.json, err: "User not found" });
 			} else {
 				res.json({
 					...req.json,
@@ -96,7 +98,7 @@ router.get("/user", (req, res, next) => {
 			}
 		})
 		.catch((err) => {
-			res.json(...req.json, err);
+			res.status(400).json(...req.json, err);
 		});
 });
 
@@ -104,7 +106,7 @@ router.get("/user/:userId", (req, res, next) => {
 	User.findById(req.params.userId)
 		.then((user) => {
 			if (user == null) {
-				res.json({ ...req.json });
+				res.status(400).json({ ...req.json });
 			} else {
 				res.json({
 					...req.json,
@@ -116,7 +118,7 @@ router.get("/user/:userId", (req, res, next) => {
 			}
 		})
 		.catch((err) => {
-			res.json(...req.json, err);
+			res.status(400).json(...req.json, err);
 		});
 });
 
@@ -145,10 +147,10 @@ router.patch("/user", (req, res, next) => {
 											status: CRUD_STATUS.UPDATED,
 										});
 									})
-									.catch((err) => res.json({ ...req.json, err }));
+									.catch((err) => res.status(400).json({ ...req.json, err }));
 							});
 						} else {
-							res.json({
+							res.status(400).json({
 								...req.json,
 								wasFound: true,
 								err: "Email already in use",
@@ -156,14 +158,14 @@ router.patch("/user", (req, res, next) => {
 						}
 					})
 					.catch((err) => {
-						res.json({ ...req.json, err });
+						res.status(400).json({ ...req.json, err });
 					});
 			} else {
-				res.json({ ...req.json, err: result.data.err });
+				res.status(400).json({ ...req.json, err: result.data.err });
 			}
 		})
 		.catch((err) => {
-			res.json({ err: err });
+			res.status(400).json({ err: err });
 		});
 });
 
@@ -190,11 +192,11 @@ router.put("/user", (req, res, next) => {
 					}
 				})
 				.catch((err) => {
-					res.json({ ...req.json, err });
+					res.status(400).json({ ...req.json, err });
 				});
 		})
 		.catch((err) => {
-			res.json({ ...req.json, err });
+			res.status(400).json({ ...req.json, err });
 		});
 });
 
@@ -203,7 +205,7 @@ router.get("/user/:userId/recipes", (req, res, next) => {
 	User.findById(id)
 		.then((user) => {
 			if (user == null) {
-				res.json({ ...req.json });
+				res.status(400).json({ ...req.json });
 			} else {
 				let recipeList = [];
 				let recipeIds = user.recipes;
@@ -223,7 +225,7 @@ router.get("/user/:userId/recipes", (req, res, next) => {
 										recipes: recipeList,
 									});
 								} else {
-									res.json({ ...req.json });
+									res.status(400).json({ ...req.json });
 								}
 							})
 							.catch((err) => {
@@ -236,7 +238,7 @@ router.get("/user/:userId/recipes", (req, res, next) => {
 			}
 		})
 		.catch((err) => {
-			res.json({ ...req.json, err });
+			res.status(400).json({ ...req.json, err });
 		});
 });
 

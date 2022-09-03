@@ -15,7 +15,7 @@ router.post("/recipe", (req, res, next) => {
 			});
 		})
 		.catch((err) => {
-			res.json({ ...req.json, err });
+			res.status(400).json({ ...req.json, err });
 		});
 });
 
@@ -24,7 +24,7 @@ router.get("/recipe/:recipeId", (req, res, next) => {
 	Recipe.findById(id)
 		.then((recipe) => {
 			if (recipe == null) {
-				res.json({ ...req.json });
+				res.status(400).json({ ...req.json });
 			} else {
 				res.json({
 					...req.json,
@@ -36,7 +36,7 @@ router.get("/recipe/:recipeId", (req, res, next) => {
 			}
 		})
 		.catch((err) => {
-			res.json({ ...req.json, err });
+			res.status(400).json({ ...req.json, err });
 		});
 });
 
@@ -45,7 +45,7 @@ router.get("/recipe", (req, res, next) => {
 	Recipe.find({ name: name })
 		.then((recipe) => {
 			if (!recipe.length) {
-				res.json({ ...req.json });
+				res.status(400).json({ ...req.json });
 			} else {
 				res.json({
 					...req.json,
@@ -57,7 +57,7 @@ router.get("/recipe", (req, res, next) => {
 			}
 		})
 		.catch((err) => {
-			res.json({ ...req.json, err });
+			res.status(400).json({ ...req.json, err });
 		});
 });
 
@@ -73,7 +73,7 @@ router.patch("/recipe", (req, res, next) => {
 			});
 		})
 		.catch((err) => {
-			res.json({ ...req.json, err });
+			res.status(400).json({ ...req.json, err });
 		});
 });
 
@@ -98,7 +98,7 @@ router.put("/recipe", (req, res, next) => {
 			}
 		})
 		.catch((err) => {
-			res.json({ ...req.json, err });
+			res.status(400).json({ ...req.json, err });
 		});
 });
 
