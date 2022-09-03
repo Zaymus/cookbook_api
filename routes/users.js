@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const Recipe = require("../models/recipe");
 const CRUD_STATUS = require("../util/constants").CRUD_STATUS;
+const recipeVisibility = require("../util/constants").recipeVisibility;
 const dotenv = require("dotenv");
 const axios = require("axios");
 const bcrypt = require("bcryptjs");
@@ -134,10 +135,8 @@ router.patch("/user", (req, res, next) => {
 					.then((user) => {
 						if (user == null || user._id.toString() === req.body.id) {
 							bcrypt.hash(req.body.password, 12).then((hashedPassword) => {
-								User.updateOne(
-									{ id: id },
-									{ ...req.body, password: hashedPassword }
-								)
+								user
+									.updateOne({ ...req.body, password: hashedPassword })
 									.then((result) => {
 										res.json({
 											...req.json,
@@ -207,35 +206,61 @@ router.get("/user/:userId/recipes", (req, res, next) => {
 			if (user == null) {
 				res.status(400).json({ ...req.json });
 			} else {
-				let recipeList = [];
-				let recipeIds = user.recipes;
-				if (user.recipes.length > 0) {
-					recipeIds.forEach((r) => {
-						Recipe.findById(r.toString())
-							.then((recipe) => {
-								recipeList.push(recipe);
-							})
-							.then((result) => {
-								if (recipeList.length > 0) {
-									res.json({
-										...req.json,
-										isSuccessful: true,
-										wasFound: true,
-										status: CRUD_STATUS.RETRIEVED,
-										recipes: recipeList,
-									});
-								} else {
-									res.status(400).json({ ...req.json });
-								}
-							})
-							.catch((err) => {
-								console.log(
-									`Could not find recipe with an id of ${r.toString()}`
-								);
+				Recipe.find({
+					_id: { $in: user.recipes },
+				})
+					.then((recipes) => {
+						if (recipes.length > 0) {
+							var userRecipes = recipes.filter((recipe) => {
+								recipe.visibility === recipeVisibility.PUBLIC;
+								return recipe;
 							});
+							res.json({
+								...req.json,
+								isSuccessful: true,
+								wasFound: true,
+								status: CRUD_STATUS.RETRIEVED,
+								recipes: userRecipes,
+							});
+						} else {
+							res.status(400).json({ ...req.json });
+						}
+					})
+					.catch((err) => {
+						res.status(400).json({ ...req.json, err });
 					});
-				}
 			}
+		})
+		.catch((err) => {
+			res.status(400).json({ ...req.json, err });
+		});
+});
+
+router.get("/user/:userId/myCookbook", (req, res, next) => {
+	const userId = req.params.userId;
+	axios
+		.get(`${process.env.BASE_URL}/user/${userId}/recipes`)
+		.then((response) => {
+			var userRecipes = response.data.recipes;
+			console.log(userRecipes);
+			Recipe.find({ users: userId })
+				.then((sharedRecipes) => {
+					sharedRecipes.forEach((recipe) => {
+						if (recipe.visibility != recipeVisibility.PRIVATE) {
+							userRecipes.push(recipe);
+						}
+					});
+					res.json({
+						...req.json,
+						isSuccessful: true,
+						wasFound: true,
+						status: CRUD_STATUS.RETRIEVED,
+						recipes: userRecipes,
+					});
+				})
+				.catch((err) => {
+					res.status(400).json({ ...req.json, err });
+				});
 		})
 		.catch((err) => {
 			res.status(400).json({ ...req.json, err });
