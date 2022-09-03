@@ -19,6 +19,13 @@ const userValidation = {
 		/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
 };
 
+const recipeVisibility = {
+	PUBLIC: "Public",
+	SHARED: "Shared",
+	PRIVATE: "Private",
+};
+
 exports.CRUD_STATUS = CRUD_STATUS;
 exports.SERVER_STATUS = SERVER_STATUS;
 exports.userValidation = userValidation;
+exports.recipeVisibility = recipeVisibility;
