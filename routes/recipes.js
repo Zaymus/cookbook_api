@@ -62,19 +62,32 @@ router.get("/recipe", (req, res, next) => {
 });
 
 router.patch("/recipe", (req, res, next) => {
-	Recipe.updateOne({ id: req.body.id }, { ...req.body })
-		.then((result) => {
-			res.json({
-				...req.json,
-				isSuccessful: true,
-				wasFound: true,
-				wasUpdated: true,
-				status: CRUD_STATUS.UPDATED,
-			});
+	const id = req.body.id;
+	delete req.body.id;
+	Recipe.findById(id)
+		.then((recipe) => {
+			recipe
+				.updateOne({ $set: { ...req.body } })
+				.then((result) => {
+					if (result.modifiedCount) {
+						Recipe.findById(id).then((recipe) => {
+							res.json({
+								...req.json,
+								isSuccessful: true,
+								wasFound: true,
+								wasUpdated: true,
+								status: CRUD_STATUS.UPDATED,
+							});
+						});
+					} else {
+						res.json({ ...req.json });
+					}
+				})
+				.catch((err) => {
+					res.status(400).json({ ...req.json, err });
+				});
 		})
-		.catch((err) => {
-			res.status(400).json({ ...req.json, err });
-		});
+		.catch((err) => console.log(err));
 });
 
 router.put("/recipe", (req, res, next) => {
