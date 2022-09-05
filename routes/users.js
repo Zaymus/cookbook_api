@@ -242,7 +242,6 @@ router.get("/user/:userId/myCookbook", (req, res, next) => {
 		.get(`${process.env.BASE_URL}/user/${userId}/recipes`)
 		.then((response) => {
 			var userRecipes = response.data.recipes;
-			console.log(userRecipes);
 			Recipe.find({ users: userId })
 				.then((sharedRecipes) => {
 					sharedRecipes.forEach((recipe) => {
