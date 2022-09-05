@@ -267,6 +267,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/CRUDErrorResponse'
 
+  /user/{userId}/myCookbook:
+    get:
+      description: retrieves all the users recipes and the recipes 
+        they have been given via the share functionality
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: id of the user to source the recipes from
+          example: "630ea999f113a432c7007993"
+      responses:
+        '200':
+          description: successful retrieval of user recipe book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getUserCookBookResponse'
+        '500':
+          description: error retrieving uaser recipe book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CRUDErrorResponse'
+
 servers:
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
@@ -896,3 +922,147 @@ components:
               __v:
                 type: number
                 example: 0
+
+    getUserCookBookRecipe1:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+          example: ""
+        _id: 
+          type: string
+          example: "630fd1c6927570d2dd476403"
+        name: 
+          type: string
+          example: "test name"
+        numServings: 
+          type: number
+          example: 4
+        steps:
+          type: array
+          items:
+            type: string
+          example:
+            - "step 1"
+            - "step 2"
+            - "step 3"
+            - "step 4"
+        imageUrl: 
+          type: string
+          example: "https://www.thisistheimageurl.com/image1"
+        owner: 
+          type: string
+          example: "630ea999f113a432c7007993"
+        visibility: 
+          type: string
+          example: "Public"
+        tags:
+          type: array
+          items:
+            type: string
+            example: "chicken"
+        ingredients: 
+          type: array
+          items:
+            type: object
+            properties:
+              ingredient: 
+                type: string
+                example: "Chicken"
+              amount: 
+                type: number
+                example: 4
+              unit: 
+                type: string
+                example: "oz"
+        __v: 
+          type: number
+          example: 0
+          
+    getUserCookBookRecipe2:
+      type: object
+      properties:
+        _id: 
+          type: string
+          example: "6313803713202acc83833a79"
+        name: 
+          type: string
+          example: "test name 2"
+        numServings: 
+          type: number
+          example: 4
+        ingredients:
+          type: array
+          items:
+            type: object
+            properties:
+              ingredient: 
+                type: string
+                example: "Chicken"
+              amount: 
+                type: number
+                example: 4
+              unit: 
+                type: string
+                example: "oz"
+              _id: 
+                type: string
+                example: "6313803713202acc83833a7a"
+        steps:
+          type: array
+          items:
+            type: string
+          example:
+            - "step 1"
+            - "step 2"
+            - "step 3"
+            - "step 4"
+        imageUrl: 
+          type: string
+          example: "https://www.thisistheimageurl.com/image1"
+        tags:
+          type: array
+          items: 
+            type: string
+          example: 
+            - "chicken"
+        owner: 
+          type: string
+          example: "63125674010e6b0219ece372"
+        users:
+          type: array
+          items:
+            type: string
+          example:
+            - "630ea999f113a432c7007993"
+        visibility: 
+          type: string
+          example: "Shared"
+        __v: 
+          type: number
+          example: 0
+
+    getUserCookBookResponse:
+      properties:
+        isSuccessful: 
+          type: boolean
+          example: true
+        wasFound: 
+          type: boolean
+          example: true
+        wasUpdated: 
+          type: boolean
+          example: false
+        wasDeleted: 
+          type: boolean
+          example: false
+        status: 
+          type: string
+          example: Retrieved
+        recipes:
+          example:
+            value:
+              - $ref: "#/components/schemas/getUserCookBookRecipe1"
+              - $ref: "#/components/schemas/getUserCookBookRecipe2"
