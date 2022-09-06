@@ -304,7 +304,9 @@ router.post("/user/removeRecipe", (req, res, next) => {
 					res.json({ ...req.json, err });
 				});
 		})
-		.catch();
+		.catch((err) => {
+			res.json({ ...req.json, err });
+		});
 });
 
 module.exports = router;
