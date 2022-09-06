@@ -266,4 +266,45 @@ router.get("/user/:userId/myCookbook", (req, res, next) => {
 		});
 });
 
+router.post("/user/addRecipe", (req, res, next) => {
+	const userId = req.query.userId;
+	const recipeId = req.query.recipeId;
+	User.findByIdAndUpdate(userId, { $push: { recipes: recipeId } })
+		.then((result) => {
+			res.json({
+				...req.json,
+				isSuccessful: true,
+				wasFound: true,
+				wasUpdated: true,
+				status: CRUD_STATUS.UPDATED,
+			});
+		})
+		.catch((err) => {
+			res.json({ ...req.json, err });
+		});
+});
+
+router.post("/user/removeRecipe", (req, res, next) => {
+	const userId = req.query.userId;
+	const recipeId = req.query.recipeId;
+	User.findById(userId)
+		.then((user) => {
+			user
+				.update({ $pop: { recipes: user.recipes.indexOf(recipeId) } })
+				.then((result) => {
+					res.json({
+						...req.json,
+						isSuccessful: true,
+						wasFound: true,
+						wasDeleted: true,
+						status: CRUD_STATUS.UPDATED,
+					});
+				})
+				.catch((err) => {
+					res.json({ ...req.json, err });
+				});
+		})
+		.catch();
+});
+
 module.exports = router;
