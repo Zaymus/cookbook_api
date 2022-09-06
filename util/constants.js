@@ -1,3 +1,5 @@
+const dotenv = require("dotenv").config();
+
 CRUD_STATUS = {
 	SAVED: "Saved",
 	RETRIEVED: "Retrieved",
@@ -25,7 +27,23 @@ const recipeVisibility = {
 	PRIVATE: "Private",
 };
 
+const nutritionix_config_dev = {
+	headers: {
+		"x-app-id": process.env.NUTRITIONIX_APP_ID,
+		"x-app-key": process.env.NUTRITIONIX_API_KEY,
+		"x-remote-user-id": process.env.NUTRITIONIX_USER_ID_DEV,
+	},
+};
+
+const MACRO_CONSTANTS = {
+	FAT_CALORIES_GRAM: 9.54,
+	CARB_CALORIES_GRAM: 4,
+	PROTEIN_CALORIES_GRAM: 4.25,
+};
+
 exports.CRUD_STATUS = CRUD_STATUS;
 exports.SERVER_STATUS = SERVER_STATUS;
 exports.userValidation = userValidation;
 exports.recipeVisibility = recipeVisibility;
+exports.nutritionix_config_dev = nutritionix_config_dev;
+exports.MACRO_CONSTANTS = MACRO_CONSTANTS;
