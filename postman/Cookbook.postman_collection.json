@@ -7,6 +7,112 @@
 	},
 	"item": [
 		{
+			"name": "Nutrionix_api_calls",
+			"item": [
+				{
+					"name": "getSearchFood",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-app-id",
+								"value": "15fe543b",
+								"type": "text"
+							},
+							{
+								"key": "x-app-key",
+								"value": "672ebb4e299069b677de3628b1c963e7",
+								"type": "text"
+							},
+							{
+								"key": "x-remote-user-id",
+								"value": "0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nutritionix_url}}/v2/search/instant?query=chicken&detailed=true",
+							"host": [
+								"{{nutritionix_url}}"
+							],
+							"path": [
+								"v2",
+								"search",
+								"instant"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "chicken"
+								},
+								{
+									"key": "detailed",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getNutritionInfo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-app-id",
+								"value": "15fe543b",
+								"type": "text"
+							},
+							{
+								"key": "x-app-key",
+								"value": "672ebb4e299069b677de3628b1c963e7",
+								"type": "text"
+							},
+							{
+								"key": "x-remote-user-id",
+								"value": "0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"query\": \"chicken\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nutritionix_url}}/v2/natural/nutrients",
+							"host": [
+								"{{nutritionix_url}}"
+							],
+							"path": [
+								"v2",
+								"natural",
+								"nutrients"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "health",
 			"event": [
 				{
@@ -829,15 +935,44 @@
 		},
 		{
 			"name": "postAddRecipeToUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"if (pm.response.code == 200)\r",
+							"{\r",
+							"    pm.test(\"Request was successful\", () => {\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"User was found\", () => {\r",
+							"        pm.expect(jsonData.wasFound).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"Recipe list was updated\", () => {\r",
+							"        pm.expect(jsonData.wasUpdated).to.be.true;\r",
+							"    });\r",
+							"}\r",
+							"pm.test(\"Server responded in under 1000ms\", pm.response.responseTime <= 1000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{cookbook_url}}/user/addRecipe?userId={{user_id}}&recipeId={{recipe_id}}",
+					"raw": "{{cookbook_url}}/api/user/addRecipe?userId={{user_id}}&recipeId={{recipe_id}}",
 					"host": [
 						"{{cookbook_url}}"
 					],
 					"path": [
+						"api",
 						"user",
 						"addRecipe"
 					],
@@ -857,9 +992,120 @@
 		},
 		{
 			"name": "postRemoveRecipeFromUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"if (pm.response.code == 200)\r",
+							"{\r",
+							"    pm.test(\"Request was successful\", () => {\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"User was found\", () => {\r",
+							"        pm.expect(jsonData.wasFound).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"Recipe was deleted from recipe list\", () => {\r",
+							"        pm.expect(jsonData.wasDeleted).to.be.true;\r",
+							"    });\r",
+							"}\r",
+							"pm.test(\"Server responded in under 1000ms\", pm.response.responseTime <= 1000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{cookbook_url}}/api/user/removeRecipe?userId={{user_id}}&recipeId={{recipe_id}}",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"removeRecipe"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{user_id}}"
+						},
+						{
+							"key": "recipeId",
+							"value": "{{recipe_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getMacros",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"if (pm.response.code == 200)\r",
+							"{\r",
+							"    pm.test(\"Request was successful\", () => {\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"Food item was found\", () => {\r",
+							"        pm.expect(jsonData.wasFound).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"Carbs percentage retrieved\", () => {\r",
+							"        pm.expect(jsonData.carbs).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"    pm.test(\"Fat percentage retrieved\", () => {\r",
+							"        pm.expect(jsonData.fat).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"    pm.test(\"Protein percentage retrieved\", () => {\r",
+							"        pm.expect(jsonData.protein).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"}\r",
+							"pm.test(\"Server responded in under 250ms\", pm.response.responseTime <= 250);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "{{cookbook_url}}/api/macros?foodItem=chicken breast&devmode=true",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"macros"
+					],
+					"query": [
+						{
+							"key": "foodItem",
+							"value": "chicken breast"
+						},
+						{
+							"key": "devmode",
+							"value": "true"
+						}
+					]
+				}
 			},
 			"response": []
 		}
