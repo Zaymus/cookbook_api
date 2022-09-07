@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: '1.0.0'
+  version: 1.1.0
   title: cookbook_api
   description: 'A cookbook api used for a future app'
 paths: 
@@ -8,45 +8,21 @@ paths:
     post:
       description: Create new recipe
       requestBody: 
-        required: true
-        content:
-          application/json:
-            schema: 
-              $ref: '#/components/schemas/createRecipe'
+        $ref: '#/components/requestBodies/createRecipe'
       responses:
         '200':
-          description: recipe created successfuly
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/postRecipeResponse'
+          $ref: '#/components/responses/postRecipe'
         '400':
-          description: error creating recipe
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+          $ref: '#/components/responses/CRUDError'
     patch:
       description: updates recipe data by id
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/updateRecipe'
+        $ref: '#/components/requestBodies/updateRecipe'
       responses:
         '200':
-          description: recipe deleted successfuly
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/patchRecipeResponse'
+          $ref: '#/components/responses/patchRecipe'
         '400':
-          description: error updating recipe
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+         $ref: '#/components/responses/CRUDError'
 
   /recipe{recipeName}:
     get:
@@ -61,17 +37,9 @@ paths:
           example: "test name"
       responses:
         '200':
-          description: successful recipe retrieval by name
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getRecipeResponse'
+          $ref: '#/components/responses/getRecipeByName'
         '400':
-          description: error retrieving recipe by name
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+          $ref: '#/components/responses/CRUDError'
 
   /recipe/{recipeId}:
     get:
@@ -86,17 +54,9 @@ paths:
           example: "630c1668e2b62e561e954087"
       responses:
         '200':
-          description: successful recipe retrieval by id
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getRecipeByIdResponse'
+          $ref: '#/components/responses/getRecipeById'
         '400':
-          description: error retrieving recipe by id
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+          $ref: '#/components/responses/CRUDError'
 
   /recipe{recipeId}:
     put:
@@ -111,62 +71,30 @@ paths:
           example: "63125749010e6b0219ece378"
       responses:
         '200':
-          description: deleted recipe successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/putRecipeResponse'
+          $ref: '#/components/responses/putRecipe'
         '400':
-          description: error deleting recipe
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+           $ref: '#/components/responses/CRUDError'
 
   /user:
     post:
       description: Create a new user
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/createUser'
+        $ref: '#/components/requestBodies/createUser'
       responses:
         '200':
-          description: user created successfuly
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/postUserResponse'
+          $ref: '#/components/responses/postUser'
         '400':
-          description: error creating user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+          $ref: '#/components/responses/CRUDError'
 
     patch:
       description: updates user data by id
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/updateUser'
+        $ref: '#/components/requestBodies/updateUser'
       responses:
         '200':
-          description: user updated successfuly
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/patchUserResponse'
+          $ref: '#/components/responses/patchUser'
         '400':
-          description: error updating user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+          $ref: '#/components/responses/CRUDError'
 
   /user{email}:
     get:
@@ -181,17 +109,9 @@ paths:
           example: "testDelete@test.com"
       responses:
         '200':
-          description: succesfully retrieved user by email
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getUserResponse'
+          $ref: '#/components/responses/getUserByEmail'
         '400':
-          description: error retrieving user by email
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+          $ref: '#/components/responses/CRUDError'
 
   /user/{userId}:
     get:
@@ -206,17 +126,9 @@ paths:
           example: "630c1668e2b62e561e954087"
       responses:
         '200':
-          description: user succesfully retrieved by id
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getUserByIdResponse'
+          $ref: '#/components/responses/getUserById'
         '400':
-          description: error retrieving user by id
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+          $ref: '#/components/responses/CRUDError'
 
   /user{userId}:
     put:
@@ -231,17 +143,9 @@ paths:
           example: "63125749010e6b0219ece378"
       responses:
         '200':
-          description: successful deletion of user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/putUserResponse'
+          $ref: '#/components/responses/putUser'
         '400':
-          description: error deleting recipe
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+          $ref: '#/components/responses/CRUDError'
   /user/{userId}/recipes:
     get:
       description: retrieves all the recipes that the user has
@@ -255,17 +159,9 @@ paths:
           example: "630ea999f113a432c7007993"
       responses:
         '200':
-          description: successful retrieval of recipes
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getUserRecipesResponse'
+          $ref: '#/components/responses/getUserRecipes'
         '400':
-          description: error retrieving user recipes
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+          $ref: '#/components/responses/CRUDError'
 
   /user/{userId}/myCookbook:
     get:
@@ -281,17 +177,9 @@ paths:
           example: "630ea999f113a432c7007993"
       responses:
         '200':
-          description: successful retrieval of user recipe book
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getUserCookBookResponse'
+          $ref: '#/components/responses/getCookbook'
         '400':
-          description: error retrieving uaser recipe book
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CRUDErrorResponse'
+          $ref: '#/components/responses/CRUDError'
 
   /user/addRecipe:
     post:
@@ -313,17 +201,9 @@ paths:
           example: "630c1668e2b62e561e954087"
       responses:
         '200':
-          description: successful addition of recipe id to user recipe list
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/postUserAddRecipeResponse"
+          $ref: "#/components/responses/postAddRecipeToUser"
         '400':
-          description: error adding recipe to user recipe list
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CRUDErrorResponse"
+          $ref: "#/components/responses/CRUDError"
 
   /user/removeRecipe:
     post:
@@ -345,17 +225,9 @@ paths:
           example: "630c1668e2b62e561e954087"
       responses:
         '200':
-          description: successful removal of the recipe id to user recipe list
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/postUserRemoveRecipeResponse"
+          $ref: "#/components/responses/postRemoveRecipeFromUser"
         '400':
-          description: error removing recipe from the user recipe list
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CRUDErrorResponse"
+          $ref: "#/components/responses/CRUDError"
   /macros:
     get:
       description: Retrieve macronutrients of food item sent in request query
@@ -369,42 +241,396 @@ paths:
           example: "beef burrito"
       responses:
         '200':
-          description: successful calculation of macronutrients
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getMacrosResponse"
+          $ref: "#/components/responses/getMacros"
         '400':
-          description: error retrieving nutrition info for requested food item
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getMacrosErrorResponse"
+          $ref: "#/components/responses/getMacrosError"
 
 servers:
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/Zaymus/cookbook/1.0.0
+    url: https://virtserver.swaggerhub.com/Zaymus/cookbook/1.1.0
 components:
-  schemas:
-    CRUDErrorResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: false
-        wasFound: 
-          type: boolean
-          example: false
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted: 
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "CRUD Error"
+  requestBodies:
+    createRecipe:
+      description: request body for a recipe to be created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/createRecipe'
+          example:
+            name: test name 2
+            numServings: 4
+            steps:
+              - step 1
+              - step 2
+              - step 3
+              - step 4
+            imageUrl: https://www.thisistheimageurl.com/image1
+            owner: 63125674010e6b0219ece372
+            visibility: Private
+            ingredients:
+              - ingredient: Chicken
+                amount: 4
+                unit: oz
+            users:
+              - '630ea999f113a432c7007993'
+            tags:
+              - chicken
+            
+    
+    updateRecipe:
+      description: request body to update a recipe
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/updateRecipe'
 
+    createUser:
+      description: request body to create a user
+      content: 
+        application/json:
+          schema:
+            $ref: '#/components/schemas/createUser'
+
+    updateUser:
+      description: request body to update a user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/updateUser'
+
+  responses:
+    CRUDError:
+      description: default error response for CRUD Operations
+      content:
+        application/json:
+          example:
+            isSuccessful: false
+            wasFound: false
+            wasUpdated: false
+            wasDeleted: false
+            status: "CRUD Error"
+
+    postRecipe:
+      description: Successful response for recipe creation
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: false
+            wasUpdated: false
+            wasDeleted: false
+            status: "Saved"
+
+    getRecipeByName:
+      description: successful response for recipe retrieval by name
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: false
+            wasDeleted: false
+            status: Retrieved
+            recipe:
+              - users: []
+                _id: 630fd1c6927570d2dd476403
+                name: test name
+                numServings: 4
+                steps:
+                  - step 1
+                  - step 2
+                  - step 3
+                  - step 4
+                imageUrl: https://www.thisistheimageurl.com/image1
+                owner: 630ea999f113a432c7007993
+                visibility: Public
+                tags: []
+                ingredients: []
+                __v: 0
+
+    getRecipeById:
+      description: successful response for recipe retrieval by id
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: false
+            wasDeleted: false
+            status: Retrieved
+            recipe:
+              _id: 630c1668e2b62e561e954087
+              name: updated test name
+              numServings: 4
+              steps:
+                - updated steps
+              imageUrl: new image url
+              __v: 1
+              owner: 630ea999f113a432c7007993
+              ingredients:
+                - ingredient: Chicken
+                  amount: 4
+                  unit: oz
+                  _id: 631256f3010e6b0219ece374
+              users:
+                - 63125674010e6b0219ece372
+              visibility: Private
+              tags: []
+
+    patchRecipe:
+      description: successful response for updating a recipe
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: true
+            wasDeleted: false
+            status: Updated
+
+    putRecipe:
+      description: successful response for deleting a recipe
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: false
+            wasDeleted: true
+            status: Deleted
+
+    postUser:
+      description: successful response for creating a user
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: false
+            wasUpdated: false
+            wasDeleted: false
+            status: Saved
+
+    getUserByEmail:
+      description: successful response for retrieving a user by email
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: false
+            wasDeleted: false
+            status: Retrieved
+            user:
+              name:
+                prefix: Mr.
+                firstName: John
+                middleName: A.
+                lastName: Doe
+              _id: 6318c2297d9013c367093dc6
+              email: testDelete@test.com
+              password: $2a$12$LG5i0Dv3C8.gw5hp1CXt6ukuwv/QOVZkWzSHbRYLO9mfSJGJBUs4S
+              recipes: []
+              __v: 0
+
+    getUserById:
+      description: successful response for retrieving a user by id
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: false
+            wasDeleted: false
+            status: Retrieved
+            user:
+              name:
+                prefix: Mr.
+                firstName: John
+                middleName: A.
+                lastName: Doe
+              _id: 630ea999f113a432c7007993
+              email: updatedTest@test.com
+              password: $2a$12$FiHf.9qnrhfHPt6gMifNeOE0K4FDt5O0rqzy13HCUDexSUg6DXgkS
+              recipes: []
+              __v: 0
+
+    patchUser:
+      description: successful response for updating a user
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: true
+            wasDeleted: false
+            status: Updated
+
+    putUser:
+      description: successful; response for deleting a user
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: false
+            wasDeleted: true
+            status: Deleted
+
+    getUserRecipes:
+      description: successful response for retrieving user recipes
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: false
+            wasDeleted: false
+            status: Retrieved
+            recipes:
+              - _id: 630c1668e2b62e561e954087
+                name: updated test name
+                numServings: 4
+                steps:
+                  - updated steps
+                imageUrl: new image url
+                __v: 1
+                owner: 630ea999f113a432c7007993
+                ingredients:
+                  - ingredient: Chicken
+                    amount: 4
+                    unit: oz
+                    _id: 631256f3010e6b0219ece374
+                users:
+                  - 63125674010e6b0219ece372
+                visibility: Private
+                tags: []
+
+    getCookbook:
+      description: successful response for retrieving user cookbook
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: false
+            wasDeleted: false
+            status: Retrieved
+            recipes:
+              - _id: 630c1668e2b62e561e954087
+                name: updated test name
+                numServings: 4
+                steps:
+                  - updated steps
+                imageUrl: new image url
+                __v: 1
+                owner: 630ea999f113a432c7007993
+                ingredients:
+                  - ingredient: Chicken
+                    amount: 4
+                    unit: oz
+                    _id: 631256f3010e6b0219ece374
+                users:
+                  - 63125674010e6b0219ece372
+                visibility: Private
+                tags: []
+              - _id: 6313803713202acc83833a79
+                name: test name 2
+                numServings: 4
+                ingredients:
+                  - ingredient: Chicken
+                    amount: 4
+                    unit: oz
+                    _id: 6313803713202acc83833a7a
+                steps:
+                  - step 1
+                  - step 2
+                  - step 3
+                  - step 4
+                imageUrl: https://www.thisistheimageurl.com/image1
+                tags:
+                  - chicken
+                owner: 63125674010e6b0219ece372
+                users:
+                  - 630ea999f113a432c7007993
+                visibility: Shared
+                __v: 0
+
+    postAddRecipeToUser:
+      description: successful response for adding a recipe to user recipe list
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: true
+            wasDeleted: false
+            status: Updated
+
+    postRemoveRecipeFromUser:
+      description: successful response for removal of recipe from user recipe list
+      content:
+        application/json:
+          example:
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: false
+            wasDeleted: true
+            status: Updated
+
+    getMacrosError:
+      description: error response for failing to get macro nutrients ofn an unknown food
+      content:
+        application/json:
+          example:
+            isSuccessful: false
+            wasFound: false
+            wasUpdated: false
+            wasDeleted: false
+            status: API Error
+            err:
+              message: Request failed with status code 404
+              name: AxiosError
+              config:
+                transitional:
+                  silentJSONParsing: true
+                  forcedJSONParsing: true
+                  clarifyTimeoutError: false
+                transformRequest:
+                  - null
+                transformResponse:
+                  - null
+                timeout: 0
+                xsrfCookieName: XSRF-TOKEN
+                xsrfHeaderName: X-XSRF-TOKEN
+                maxContentLength: -1
+                maxBodyLength: -1
+                env: {}
+                headers:
+                  Accept: application/json, text/plain, */*
+                  Content-Type: application/json
+                  x-app-id: 15fe543b
+                  x-app-key: 672ebb4e299069b677de3628b1c963e7
+                  x-remote-user-id: '0'
+                  User-Agent: axios/0.27.2
+                  Content-Length: 16
+                method: post
+                url: https://trackapi.nutritionix.com/v2/natural/nutrients
+                data: '{"query":"v vk"}'
+              code: ERR_BAD_REQUEST
+              status: 404
+    
+    getMacros:
+      description: successful retrieval of macronutrient breakdown from food item
+      content:
+        application/json:
+          example:
+            calories: 198
+            carbs: 0
+            fat: 20
+            protein: 79
+
+  schemas:
     createRecipe:
       required:
         - name
@@ -464,194 +690,6 @@ components:
             type: string
             example: "chicken"
 
-    postRecipeResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: false
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted: 
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "Saved"
-
-    getRecipeResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted:
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "Retrieved"
-        recipe: 
-          type: array
-          items:
-            type: object
-            properties:
-              users:
-                type: array
-                items:
-                  type: string
-                  example: "63125674010e6b0219ece372"
-              _id:
-                type: string
-                example: "630fd1c6927570d2dd476403"
-              name: 
-                type: string
-                example: "test name"
-              numServings:
-                type: number
-                example: 4
-              steps:
-                type: array
-                items:
-                  type: string
-                example: 
-                  - step 1
-                  - step 2
-                  - step 3
-                  - step 4
-              imageUrl: 
-                type: string
-                example: "https://www.thisistheimageurl.com/image1"
-              owner: 
-                type: string
-                example: "630ea999f113a432c7007993"
-              visibility:
-                type: string
-                example: "Private"
-              tags:
-                type: array
-                items:
-                  type: string
-                  example: "chicken"
-              ingredients: 
-                type: array
-                items:
-                  type: object
-                  properties:
-                    ingredient:
-                      type: string
-                      example: "Chicken"
-                    amount:
-                      type: number
-                      example: 4
-                    unit:
-                      type: string
-                      example: "oz"
-              __v: 
-                type: number
-                example: 0
-
-    getRecipeByIdResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted:
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "Retrieved"
-        recipe: 
-            type: object
-            properties:
-              users:
-                type: array
-                items:
-                  type: string
-                  example: "63125674010e6b0219ece372"
-              _id:
-                type: string
-                example: "630fd1c6927570d2dd476403"
-              name: 
-                type: string
-                example: "test name"
-              numServings:
-                type: number
-                example: 4
-              steps:
-                type: array
-                items:
-                  type: string
-                example: 
-                  - step 1
-                  - step 2
-                  - step 3
-                  - step 4
-              imageUrl: 
-                type: string
-                example: "https://www.thisistheimageurl.com/image1"
-              owner: 
-                type: string
-                example: "630ea999f113a432c7007993"
-              visibility:
-                type: string
-                example: "Private"
-              tags:
-                type: array
-                items:
-                  type: string
-                  example: "chicken"
-              ingredients: 
-                type: array
-                items:
-                  type: object
-                  properties:
-                    ingredient:
-                      type: string
-                      example: "Chicken"
-                    amount:
-                      type: number
-                      example: 4
-                    unit:
-                      type: string
-                      example: "oz"
-              __v: 
-                type: number
-                example: 0
-    
-    putRecipeResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted: 
-          type: boolean
-          example: true
-        status: 
-          type: string
-          example: "Deleted"
-          
     updateRecipe: 
       properties:
         id: 
@@ -674,25 +712,6 @@ components:
         owner: 
           type: string
           example: "630ea999f113a432c7007993"
-
-    patchRecipeResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: true
-        wasDeleted: 
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "Updated"
-        
     
     createUser:
       required:
@@ -729,155 +748,7 @@ components:
           items:
             type: string
             example: "630c1668e2b62e561e954087"
-    
-    postUserResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: false
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted: 
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "Saved"
 
-    getUserResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted:
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "Retrieved"
-        user: 
-          type: object
-          properties:
-            name: 
-              type: object
-              properties:
-                prefix:
-                  type: string
-                  example: "Mr."
-                firstName:
-                  type: string
-                  example: "John"
-                middleName: 
-                  type: string
-                  example: "A."
-                lastName:
-                  type: string
-                  example: "Doe"
-                suffix:
-                  type: string
-                  example: "Sr."
-            _id:
-              type: string
-              example: "6313534685980fd670aeb354"
-            email: 
-              type: string
-              example: "testDelete@test.com"
-            password:
-              type: string
-              example: "$2a$12$Y8W4683TNavyYJ6BJDKJ9.BSuKYYVmMfrmXZbSFdGgI/vuRkYnGXm"
-            recipes:
-              type: array
-              items:
-                type: string
-                example: "630c1668e2b62e561e954087"
-            __v: 
-              type: number
-              example: 0
-
-    getUserByIdResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted:
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "Retrieved"
-        user: 
-          type: object
-          properties:
-            name: 
-              type: object
-              properties:
-                prefix:
-                  type: string
-                  example: "Mr."
-                firstName:
-                  type: string
-                  example: "John"
-                middleName: 
-                  type: string
-                  example: "A."
-                lastName:
-                  type: string
-                  example: "Doe"
-                suffix:
-                  type: string
-                  example: "Sr."
-            _id:
-              type: string
-              example: "6313534685980fd670aeb354"
-            email: 
-              type: string
-              example: "testDelete@test.com"
-            password:
-              type: string
-              example: "$2a$12$Y8W4683TNavyYJ6BJDKJ9.BSuKYYVmMfrmXZbSFdGgI/vuRkYnGXm"
-            recipes:
-              type: array
-              items:
-                type: string
-                example: "630c1668e2b62e561e954087"
-            __v: 
-              type: number
-              example: 0
-    
-    putUserResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted: 
-          type: boolean
-          example: true
-        status: 
-          type: string
-          example: "Deleted"
-          
     updateUser: 
       properties:
         id: 
@@ -912,347 +783,3 @@ components:
         password: 
           type: string
           example: "Abc12345!"
-
-    patchUserResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: true
-        wasDeleted: 
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "Updated"
-
-    getUserRecipesResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted:
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "Retrieved"
-        recipes: 
-          type: array
-          items: 
-            type: object
-            properties:
-              users: 
-                type: array
-                items:
-                  type: string
-                example: 
-                  - ""
-              _id: 
-                type: string
-                example: "630fd1c6927570d2dd476403"
-              name: 
-                type: string
-                example: "test name"
-              numServings: 
-                type: number
-                example: 4
-              steps: 
-                type: array
-                items:
-                  type: string
-                example: 
-                  - step 1
-                  - step 2
-                  - step 3
-                  - step 4
-              imageUrl: 
-                type: string
-                example: "https://www.thisistheimageurl.com/image1"
-              owner: 
-                type: string
-                example: "630ea999f113a432c7007993"
-              visibility: 
-                type: string
-                example: "Private"
-              tags: 
-                type: array
-                items:
-                  type: string
-                example: 
-                  - "chicken"
-                  - "pasta"
-              ingredients: 
-                type: array
-                items:
-                  type: object
-                  properties:
-                    ingredient:
-                      type: string
-                      example: "Chicken"
-                    amount:
-                      type: number
-                      example: 4
-                    unit:
-                      type: string
-                      example: "oz"
-              __v:
-                type: number
-                example: 0
-
-    getUserCookBookRecipe1:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-          example: ""
-        _id: 
-          type: string
-          example: "630fd1c6927570d2dd476403"
-        name: 
-          type: string
-          example: "test name"
-        numServings: 
-          type: number
-          example: 4
-        steps:
-          type: array
-          items:
-            type: string
-          example:
-            - "step 1"
-            - "step 2"
-            - "step 3"
-            - "step 4"
-        imageUrl: 
-          type: string
-          example: "https://www.thisistheimageurl.com/image1"
-        owner: 
-          type: string
-          example: "630ea999f113a432c7007993"
-        visibility: 
-          type: string
-          example: "Public"
-        tags:
-          type: array
-          items:
-            type: string
-            example: "chicken"
-        ingredients: 
-          type: array
-          items:
-            type: object
-            properties:
-              ingredient: 
-                type: string
-                example: "Chicken"
-              amount: 
-                type: number
-                example: 4
-              unit: 
-                type: string
-                example: "oz"
-        __v: 
-          type: number
-          example: 0
-          
-    getUserCookBookRecipe2:
-      type: object
-      properties:
-        _id: 
-          type: string
-          example: "6313803713202acc83833a79"
-        name: 
-          type: string
-          example: "test name 2"
-        numServings: 
-          type: number
-          example: 4
-        ingredients:
-          type: array
-          items:
-            type: object
-            properties:
-              ingredient: 
-                type: string
-                example: "Chicken"
-              amount: 
-                type: number
-                example: 4
-              unit: 
-                type: string
-                example: "oz"
-              _id: 
-                type: string
-                example: "6313803713202acc83833a7a"
-        steps:
-          type: array
-          items:
-            type: string
-          example:
-            - "step 1"
-            - "step 2"
-            - "step 3"
-            - "step 4"
-        imageUrl: 
-          type: string
-          example: "https://www.thisistheimageurl.com/image1"
-        tags:
-          type: array
-          items: 
-            type: string
-          example: 
-            - "chicken"
-        owner: 
-          type: string
-          example: "63125674010e6b0219ece372"
-        users:
-          type: array
-          items:
-            type: string
-          example:
-            - "630ea999f113a432c7007993"
-        visibility: 
-          type: string
-          example: "Shared"
-        __v: 
-          type: number
-          example: 0
-
-    getUserCookBookResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted: 
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: Retrieved
-        recipes:
-          example:
-            value:
-              - $ref: "#/components/schemas/getUserCookBookRecipe1"
-              - $ref: "#/components/schemas/getUserCookBookRecipe2"
-
-    postUserAddRecipeResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: true
-        wasDeleted: 
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "Updated"
-
-    postUserRemoveRecipeResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted: 
-          type: boolean
-          example: true
-        status: 
-          type: string
-          example: "Deleted"
-
-    getMacrosResponse:
-      properties:
-        isSuccessful: 
-          type: boolean
-          example: true
-        wasFound: 
-          type: boolean
-          example: true
-        wasUpdated: 
-          type: boolean
-          example: false
-        wasDeleted: 
-          type: boolean
-          example: false
-        status: 
-          type: string
-          example: "Retrieved"
-        carbs: 
-          type: number
-          example: 50.85
-        fat: 
-          type: number
-          example: 33.56
-        protein: 
-          type: number
-          example: 15.59
-
-    getMacrosErrorResponse:
-      example:
-        isSuccessful: false
-        wasFound: false
-        wasUpdated: false
-        wasDeleted: false
-        status: API Error
-        err:
-          message: Request failed with status code 404
-          name: AxiosError
-          config:
-            transitional:
-              silentJSONParsing: true
-              forcedJSONParsing: true
-              clarifyTimeoutError: false
-            transformRequest:
-              - null
-            transformResponse:
-              - null
-            timeout: 0
-            xsrfCookieName: XSRF-TOKEN
-            xsrfHeaderName: X-XSRF-TOKEN
-            maxContentLength: -1
-            maxBodyLength: -1
-            env: {}
-            headers:
-              Accept: application/json, text/plain, */*
-              Content-Type: application/json
-              x-app-id: 15fe543b
-              x-app-key: 672ebb4e299069b677de3628b1c963e7
-              x-remote-user-id: '0'
-              User-Agent: axios/0.27.2
-              Content-Length: 16
-            method: post
-            url: https://trackapi.nutritionix.com/v2/natural/nutrients
-            data: '{"query":"v vk"}'
-          code: ERR_BAD_REQUEST
-          status: 404
