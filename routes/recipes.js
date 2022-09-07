@@ -130,34 +130,37 @@ router.get("/macros", (req, res, next) => {
 			)
 			.then((result) => {
 				const FOOD_DATA = result.data.foods[0];
-				console.log(FOOD_DATA);
-				const CALORIES = Math.round(FOOD_DATA.nf_calories);
-				const TOTAL_FAT = FOOD_DATA.nf_total_fat;
-				const TOTAL_CARBS = FOOD_DATA.nf_total_carbohydrate;
-				const TOTAL_PROTEIN = FOOD_DATA.nf_protein;
 
-				console.log(TOTAL_FAT * MACRO_CONSTANTS.FAT_CALORIES_GRAM);
+				const TOTAL_FAT = Math.round(FOOD_DATA.nf_total_fat);
+				const TOTAL_CARBS = Math.round(FOOD_DATA.nf_total_carbohydrate);
+				const TOTAL_PROTEIN = Math.round(FOOD_DATA.nf_protein);
 
 				const FAT_CALS = TOTAL_FAT * MACRO_CONSTANTS.FAT_CALORIES_GRAM;
 				const CARB_CALS = TOTAL_CARBS * MACRO_CONSTANTS.CARB_CALORIES_GRAM;
 				const PROTEIN_CALS =
 					TOTAL_PROTEIN * MACRO_CONSTANTS.PROTEIN_CALORIES_GRAM;
+				const TOTAL_CALS = FAT_CALS + CARB_CALS + PROTEIN_CALS;
 
-				const fat = parseInt((FAT_CALS / CALORIES) * 100);
-				const carbs = parseInt((CARB_CALS / CALORIES) * 100);
-				const protein = parseInt((PROTEIN_CALS / CALORIES) * 100);
-				console.log("fat", TOTAL_FAT, FAT_CALS, fat);
-				console.log("carbs", TOTAL_CARBS, CARB_CALS, carbs);
-				console.log("protein", TOTAL_PROTEIN, PROTEIN_CALS, protein);
+				const fat = (FAT_CALS / TOTAL_CALS) * 100;
+				const carbs = (CARB_CALS / TOTAL_CALS) * 100;
+				const protein = (PROTEIN_CALS / TOTAL_CALS) * 100;
+
+				const fat_perc = Math.round((fat + Number.EPSILON) * 100) / 100;
+				const carbs_perc = Math.round((carbs + Number.EPSILON) * 100) / 100;
+				const protein_perc = Math.round((protein + Number.EPSILON) * 100) / 100;
+
 				res.json({
-					calories: CALORIES,
-					carbs: carbs,
-					fat: fat,
-					protein: protein,
+					...req.json,
+					isSuccessful: true,
+					wasFound: true,
+					status: CRUD_STATUS.RETRIEVED,
+					carbs: carbs_perc,
+					fat: fat_perc,
+					protein: protein_perc,
 				});
 			})
 			.catch((err) => {
-				res.json({ ...req.json, err });
+				res.status(400).json({ ...req.json, status: "API Error", err });
 			});
 	}
 });
