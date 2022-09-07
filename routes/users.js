@@ -210,21 +210,17 @@ router.get("/user/:userId/recipes", (req, res, next) => {
 					_id: { $in: user.recipes },
 				})
 					.then((recipes) => {
-						if (recipes.length > 0) {
-							var userRecipes = recipes.filter((recipe) => {
-								recipe.visibility === recipeVisibility.PUBLIC;
-								return recipe;
-							});
-							res.json({
-								...req.json,
-								isSuccessful: true,
-								wasFound: true,
-								status: CRUD_STATUS.RETRIEVED,
-								recipes: userRecipes,
-							});
-						} else {
-							res.status(400).json({ ...req.json });
-						}
+						var userRecipes = recipes.filter((recipe) => {
+							recipe.visibility === recipeVisibility.PUBLIC;
+							return recipe;
+						});
+						res.json({
+							...req.json,
+							isSuccessful: true,
+							wasFound: true,
+							status: CRUD_STATUS.RETRIEVED,
+							recipes: userRecipes,
+						});
 					})
 					.catch((err) => {
 						res.status(400).json({ ...req.json, err });
@@ -287,10 +283,12 @@ router.post("/user/addRecipe", (req, res, next) => {
 router.post("/user/removeRecipe", (req, res, next) => {
 	const userId = req.query.userId;
 	const recipeId = req.query.recipeId;
+
 	User.findById(userId)
 		.then((user) => {
-			user
-				.update({ $pop: { recipes: user.recipes.indexOf(recipeId) } })
+			User.findByIdAndUpdate(user._id, {
+				$pull: { recipes: recipeId },
+			})
 				.then((result) => {
 					res.json({
 						...req.json,
