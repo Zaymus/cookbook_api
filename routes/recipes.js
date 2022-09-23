@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const Recipe = require("../models/recipe");
-const CRUD_STATUS = require("../util/constants").CRUD_STATUS;
+const { CRUD_STATUS, nutritionix_config_dev } = require("../util/constants");
 const DOTENV = require("dotenv");
-const nutritionix_config_dev =
-	require("../util/constants").nutritionix_config_dev;
 const axios = require("axios");
-const MACRO_CONSTANTS = require("../util/constants").MACRO_CONSTANTS;
+const {
+	convertServingSizeUnit,
+	calculateMacroData,
+} = require("../util/functions");
 
 router.post("/recipe", (req, res, next) => {
 	const recipe = new Recipe({ ...req.body });
@@ -21,6 +22,89 @@ router.post("/recipe", (req, res, next) => {
 		})
 		.catch((err) => {
 			res.status(400).json({ ...req.json, err });
+		});
+});
+
+router.get("/recipe/healthInfo", (req, res, next) => {
+	const recipeId = req.query.recipeId;
+	const devmode = req.query.devmode;
+	axios
+		.get(`${process.env.BASE_URL}/recipe/${recipeId}`)
+		.then((result) => {
+			const response = result.data;
+			if (
+				response.isSuccessful &&
+				response.wasFound &&
+				response.status === CRUD_STATUS.RETRIEVED
+			) {
+				const ingredients = response.recipe.ingredients;
+				const numServings = response.recipe.numServings;
+				var macros = {
+					calories: 0,
+					carbs: 0,
+					fat: 0,
+					protein: 0,
+				};
+				let itemCount = 0;
+				ingredients.forEach((item) => {
+					const foodItem = JSON.stringify(item);
+
+					axios
+						.get(
+							`${process.env.BASE_URL}/macros?foodItem=${foodItem}${
+								devmode === "true" ? `&devmode=true` : ""
+							}`
+						)
+						.then((result) => {
+							itemCount++;
+							return result.data;
+						})
+						.then((macroData) => {
+							if (
+								macroData.isSuccessful &&
+								macroData.wasFound &&
+								macroData.status === CRUD_STATUS.RETRIEVED
+							) {
+								macros.calories += macroData.calories;
+								macros.carbs += macroData.carbs.total;
+								macros.fat += macroData.fat.total;
+								macros.protein += macroData.protein.total;
+								if (itemCount == ingredients.length) {
+									return true;
+								}
+								return false;
+							}
+						})
+						.then((totalComplete) => {
+							if (totalComplete) {
+								const macroData = calculateMacroData(
+									macros.fat / numServings,
+									macros.carbs / numServings,
+									macros.protein / numServings
+								);
+
+								macroData.calories =
+									Math.round(
+										(macros.calories / numServings + Number.EPSILON) * 100
+									) / 100;
+
+								res.json({
+									...req.json,
+									isSuccessful: true,
+									wasFound: true,
+									status: CRUD_STATUS.RETRIEVED,
+									macroData,
+								});
+							}
+						})
+						.catch((err) => {
+							res.json({ ...req.json, err });
+						});
+				});
+			}
+		})
+		.catch((err) => {
+			res.json({ ...req.json, err });
 		});
 });
 
@@ -121,42 +205,39 @@ router.put("/recipe", (req, res, next) => {
 });
 
 router.get("/macros", (req, res, next) => {
+	const foodItem = JSON.parse(req.query.foodItem);
 	if (req.query.devmode == "true") {
 		axios
 			.post(
 				process.env.NUTRITIONIX_NUTRITION_INFO,
-				{ query: req.query.foodItem },
+				{ query: foodItem.ingredient },
 				nutritionix_config_dev
 			)
 			.then((result) => {
-				const FOOD_DATA = result.data.foods[0];
+				const foodData = result.data.foods[0];
 
-				const TOTAL_FAT = Math.round(FOOD_DATA.nf_total_fat);
-				const TOTAL_CARBS = Math.round(FOOD_DATA.nf_total_carbohydrate);
-				const TOTAL_PROTEIN = Math.round(FOOD_DATA.nf_protein);
+				const servingSizeWeight = convertServingSizeUnit(foodItem, foodData);
+				const servingSizeScale = foodItem.amount / servingSizeWeight;
+				const calories = Math.round(foodData.nf_calories * servingSizeScale);
+				const totalFat = Math.round(foodData.nf_total_fat * servingSizeScale);
+				const totalCarbs = Math.round(
+					foodData.nf_total_carbohydrate * servingSizeScale
+				);
+				const totalProtein = Math.round(foodData.nf_protein * servingSizeScale);
 
-				const FAT_CALS = TOTAL_FAT * MACRO_CONSTANTS.FAT_CALORIES_GRAM;
-				const CARB_CALS = TOTAL_CARBS * MACRO_CONSTANTS.CARB_CALORIES_GRAM;
-				const PROTEIN_CALS =
-					TOTAL_PROTEIN * MACRO_CONSTANTS.PROTEIN_CALORIES_GRAM;
-				const TOTAL_CALS = FAT_CALS + CARB_CALS + PROTEIN_CALS;
-
-				const fat = (FAT_CALS / TOTAL_CALS) * 100;
-				const carbs = (CARB_CALS / TOTAL_CALS) * 100;
-				const protein = (PROTEIN_CALS / TOTAL_CALS) * 100;
-
-				const fat_perc = Math.round((fat + Number.EPSILON) * 100) / 100;
-				const carbs_perc = Math.round((carbs + Number.EPSILON) * 100) / 100;
-				const protein_perc = Math.round((protein + Number.EPSILON) * 100) / 100;
+				const macroData = calculateMacroData(
+					totalFat,
+					totalCarbs,
+					totalProtein
+				);
 
 				res.json({
 					...req.json,
 					isSuccessful: true,
 					wasFound: true,
 					status: CRUD_STATUS.RETRIEVED,
-					carbs: carbs_perc,
-					fat: fat_perc,
-					protein: protein_perc,
+					calories: calories,
+					...macroData,
 				});
 			})
 			.catch((err) => {
