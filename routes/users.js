@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const Recipe = require("../models/recipe");
-const CRUD_STATUS = require("../util/constants").CRUD_STATUS;
-const recipeVisibility = require("../util/constants").recipeVisibility;
+const { CRUD_STATUS, recipeVisibility } = require("../util/constants");
 const dotenv = require("dotenv");
 const axios = require("axios");
 const bcrypt = require("bcryptjs");
@@ -169,7 +168,7 @@ router.patch("/user", (req, res, next) => {
 });
 
 router.put("/user", (req, res, next) => {
-	const id = req.body.id;
+	const id = req.query.id;
 	User.findById(id)
 		.then((user) => {
 			User.deleteOne({ _id: id })
