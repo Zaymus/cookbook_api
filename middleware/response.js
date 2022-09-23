@@ -1,4 +1,4 @@
-const CRUD_STATUS = require("../util/constants").CRUD_STATUS;
+const { CRUD_STATUS } = require("../util/constants");
 const response = (req, res, next) => {
 	const json = {
 		isSuccessful: false,

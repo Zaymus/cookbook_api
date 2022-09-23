@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const { USER_PREFIX_LIST } = require("../util/constants");
 const Schema = mongoose.Schema;
 
-const userValidation = require("../util/constants").userValidation;
+const { userValidation } = require("../util/constants");
 
 const userSchema = new Schema({
 	email: {
