@@ -56,9 +56,6 @@ const recipeSchema = new Schema({
 				type: Number,
 			},
 		},
-		calorieType: {
-			type: String,
-		},
 	},
 	owner: {
 		type: Schema.Types.ObjectId,
