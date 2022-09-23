@@ -194,7 +194,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"test name 2\",\r\n    \"numServings\": 4,\r\n    \"steps\": [\"step 1\", \"step 2\", \"step 3\", \"step 4\"],\r\n    \"imageUrl\": \"https://www.thisistheimageurl.com/image1\",\r\n    \"owner\": \"63125674010e6b0219ece372\",\r\n    \"visibility\": \"Private\",\r\n    \"ingredients\": [\r\n        {\r\n            \"ingredient\": \"Chicken\",\r\n            \"amount\": 4,\r\n            \"unit\": \"oz\"\r\n        }\r\n    ],\r\n    \"users\": [\"{{user_id}}\"],\r\n    \"tags\": [\"chicken\"]\r\n}",
+					"raw": "{\r\n    \"name\": \"test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": [\"step 1\", \"step 2\", \"step 3\", \"step 4\"],\r\n    \"imageUrl\": \"https://www.thisistheimageurl.com/image1\",\r\n    \"owner\": \"63125674010e6b0219ece372\",\r\n    \"visibility\": \"Private\",\r\n    \"ingredients\": [\r\n        {\r\n            \"ingredient\": \"Chicken\",\r\n            \"amount\": 4,\r\n            \"unit\": \"oz\"\r\n        }\r\n    ],\r\n    \"users\": [\"{{user_id}}\"],\r\n    \"tags\": [\"chicken\"]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -403,7 +403,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"{{recipe_id}}\",\r\n    \"name\": \"updated test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": \"updated steps\",\r\n    \"imageUrl\": \"new image url\",\r\n    \"owner\": \"{{user_id}}\"\r\n}\r\n",
+					"raw": "{\r\n    \"id\": \"{{recipe_id}}\",\r\n    \"name\": \"updated test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": \"updated steps\",\r\n    \"imageUrl\": \"new image url\",\r\n    \"ingredients\": [\r\n        {\r\n            \"ingredient\": \"Chicken Breast\",\r\n            \"amount\": 4,\r\n            \"unit\": \"oz\"\r\n        },\r\n        {\r\n            \"ingredient\": \"Rice\",\r\n            \"amount\": 2.5,\r\n            \"unit\": \"oz\"\r\n        },\r\n        {\r\n            \"ingredient\": \"Broccoli\",\r\n            \"amount\": 1.5,\r\n            \"unit\": \"oz\"\r\n        }\r\n    ],\r\n    \"owner\": \"{{user_id}}\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -463,7 +463,9 @@
 							"            pm.expect(jsonData.wasDeleted).to.be.true;\r",
 							"        });\r",
 							"    }\r",
-							"    pm.test(\"Server responded in under 500ms\", pm.response.responseTime <= 500);\r",
+							"    pm.test(\"Server responded in under 500ms\", () => {\r",
+							"        pm.expect(pm.response.responseTime).below(500);\r",
+							"    });\r",
 							"}"
 						],
 						"type": "text/javascript"
@@ -766,7 +768,9 @@
 							"            pm.expect(jsonData.wasDeleted).to.be.true;\r",
 							"        });\r",
 							"    }\r",
-							"    pm.test(\"Server responded in under 500ms\", pm.response.responseTime <= 500);\r",
+							"    pm.test(\"Server responded in under 500ms\", () => {\r",
+							"        pm.expect(pm.response.responseTime).below(500);\r",
+							"    });\r",
 							"}"
 						],
 						"type": "text/javascript"
@@ -843,7 +847,9 @@
 							"        pm.expect(jsonData.recipes.length).to.be.greaterThan(0);\r",
 							"    });\r",
 							"}\r",
-							"pm.test(\"Server responded in under 500ms\", pm.response.responseTime <= 500);"
+							"pm.test(\"Server responded in under 500ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).below(500);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -903,7 +909,9 @@
 							"        pm.expect(jsonData.recipes.length).to.be.greaterThan(0);\r",
 							"    });\r",
 							"}\r",
-							"pm.test(\"Server responded in under 5000ms\", pm.response.responseTime <= 5000);"
+							"pm.test(\"Server responded in under 5000ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).below(5000);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -957,7 +965,9 @@
 							"        pm.expect(jsonData.wasUpdated).to.be.true;\r",
 							"    });\r",
 							"}\r",
-							"pm.test(\"Server responded in under 1000ms\", pm.response.responseTime <= 1000);"
+							"pm.test(\"Server responded in under 1000ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).below(1000);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -1014,7 +1024,9 @@
 							"        pm.expect(jsonData.wasDeleted).to.be.true;\r",
 							"    });\r",
 							"}\r",
-							"pm.test(\"Server responded in under 1000ms\", pm.response.responseTime <= 1000);"
+							"pm.test(\"Server responded in under 1000ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).below(1000);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -1067,17 +1079,28 @@
 							"    pm.test(\"Food item was found\", () => {\r",
 							"        pm.expect(jsonData.wasFound).to.be.true;\r",
 							"    });\r",
+							"    pm.test(\"Carbs total retrieved\", () => {\r",
+							"        pm.expect(jsonData.carbs.total).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
 							"    pm.test(\"Carbs percentage retrieved\", () => {\r",
-							"        pm.expect(jsonData.carbs).to.be.a(\"number\").that.is.at.least(0);\r",
+							"        pm.expect(jsonData.carbs.percentage).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"    pm.test(\"Fat total retrieved\", () => {\r",
+							"        pm.expect(jsonData.fat.total).to.be.a(\"number\").that.is.at.least(0);\r",
 							"    });\r",
 							"    pm.test(\"Fat percentage retrieved\", () => {\r",
-							"        pm.expect(jsonData.fat).to.be.a(\"number\").that.is.at.least(0);\r",
+							"        pm.expect(jsonData.fat.percentage).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"     pm.test(\"Protein total retrieved\", () => {\r",
+							"        pm.expect(jsonData.protein.total).to.be.a(\"number\").that.is.at.least(0);\r",
 							"    });\r",
 							"    pm.test(\"Protein percentage retrieved\", () => {\r",
-							"        pm.expect(jsonData.protein).to.be.a(\"number\").that.is.at.least(0);\r",
+							"        pm.expect(jsonData.protein.percentage).to.be.a(\"number\").that.is.at.least(0);\r",
 							"    });\r",
 							"}\r",
-							"pm.test(\"Server responded in under 250ms\", pm.response.responseTime <= 250);"
+							"pm.test(\"Server responded in under 500ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).below(500);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -1087,7 +1110,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{cookbook_url}}/api/macros?foodItem=chicken breast&devmode=true",
+					"raw": "{{cookbook_url}}/api/macros?foodItem={\"ingredient\": \"Chicken Breast\", \"amount\": \"4\", \"unit\": \"oz\"}&devmode=true",
 					"host": [
 						"{{cookbook_url}}"
 					],
@@ -1098,7 +1121,89 @@
 					"query": [
 						{
 							"key": "foodItem",
-							"value": "chicken breast"
+							"value": "{\"ingredient\": \"Chicken Breast\", \"amount\": \"4\", \"unit\": \"oz\"}"
+						},
+						{
+							"key": "devmode",
+							"value": "true"
+						},
+						{
+							"key": "foodItem",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getRecipeHealthinfo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"if (pm.response.code == 200)\r",
+							"{\r",
+							"    pm.test(\"Request was successful\", () => {\r",
+							"        pm.expect(jsonData.isSuccessful).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"Food item was found\", () => {\r",
+							"        pm.expect(jsonData.wasFound).to.be.true;\r",
+							"    });\r",
+							"    pm.test(\"Carbs total retrieved\", () => {\r",
+							"        pm.expect(jsonData.macroData.carbs.total).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"    pm.test(\"Carbs percentage retrieved\", () => {\r",
+							"        pm.expect(jsonData.macroData.carbs.percentage).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"    pm.test(\"Fat total retrieved\", () => {\r",
+							"        pm.expect(jsonData.macroData.fat.total).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"    pm.test(\"Fat percentage retrieved\", () => {\r",
+							"        pm.expect(jsonData.macroData.fat.percentage).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"     pm.test(\"Protein total retrieved\", () => {\r",
+							"        pm.expect(jsonData.macroData.protein.total).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"    pm.test(\"Protein percentage retrieved\", () => {\r",
+							"        pm.expect(jsonData.macroData.protein.percentage).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"    pm.test(\"Calories retrieved\", () => {\r",
+							"        pm.expect(jsonData.macroData.calories).to.be.a(\"number\").that.is.at.least(0);\r",
+							"    });\r",
+							"}\r",
+							"pm.test(\"Server responded in under 750ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).below(750);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cookbook_url}}/api/recipe/healthInfo?recipeId={{recipe_id}}&devmode=true",
+					"host": [
+						"{{cookbook_url}}"
+					],
+					"path": [
+						"api",
+						"recipe",
+						"healthInfo"
+					],
+					"query": [
+						{
+							"key": "recipeId",
+							"value": "{{recipe_id}}"
 						},
 						{
 							"key": "devmode",
