@@ -403,7 +403,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"{{recipe_id}}\",\r\n    \"name\": \"updated test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": \"updated steps\",\r\n    \"imageUrl\": \"new image url\",\r\n    \"ingredients\": [\r\n        {\r\n            \"ingredient\": \"Chicken Breast\",\r\n            \"amount\": 4,\r\n            \"unit\": \"oz\"\r\n        },\r\n        {\r\n            \"ingredient\": \"Rice\",\r\n            \"amount\": 2.5,\r\n            \"unit\": \"oz\"\r\n        },\r\n        {\r\n            \"ingredient\": \"Broccoli\",\r\n            \"amount\": 1.5,\r\n            \"unit\": \"oz\"\r\n        }\r\n    ],\r\n    \"owner\": \"{{user_id}}\"\r\n}\r\n",
+					"raw": "{\r\n    \"id\": \"{{recipe_id}}\",\r\n    \"name\": \"updated test name\",\r\n    \"numServings\": 4,\r\n    \"steps\": \"updated steps\",\r\n    \"imageUrl\": \"new image url\",\r\n    \"ingredients\": [\r\n        {\r\n            \"ingredient\": \"Chicken Breast\",\r\n            \"amount\": 4,\r\n            \"unit\": \"oz\"\r\n        },\r\n        {\r\n            \"ingredient\": \"Rice\",\r\n            \"amount\": 2.5,\r\n            \"unit\": \"oz\"\r\n        },\r\n        {\r\n            \"ingredient\": \"Broccoli\",\r\n            \"amount\": 1.5,\r\n            \"unit\": \"oz\"\r\n        }\r\n    ],\r\n    \"owner\": \"{{user_id}}\",\r\n    \"visibility\": \"Public\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
