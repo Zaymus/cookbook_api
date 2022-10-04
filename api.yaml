@@ -2,32 +2,32 @@ openapi: 3.0.0
 info:
   version: 1.1.0
   title: cookbook_api
-  description: 'A cookbook api used for a future app'
-paths: 
+  description: "A cookbook api used for a future app"
+paths:
   /recipe:
     post:
       description: Create new recipe
-      requestBody: 
-        $ref: '#/components/requestBodies/createRecipe'
+      requestBody:
+        $ref: "#/components/requestBodies/createRecipe"
       responses:
-        '200':
-          $ref: '#/components/responses/postRecipe'
-        '400':
-          $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/postRecipe"
+        "400":
+          $ref: "#/components/responses/CRUDError"
     patch:
       description: updates recipe data by id
       requestBody:
-        $ref: '#/components/requestBodies/updateRecipe'
+        $ref: "#/components/requestBodies/updateRecipe"
       responses:
-        '200':
-          $ref: '#/components/responses/patchRecipe'
-        '400':
-         $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/patchRecipe"
+        "400":
+          $ref: "#/components/responses/CRUDError"
 
   /recipe{recipeName}:
     get:
       description: Returns an array of recipes by name
-      parameters: 
+      parameters:
         - in: path
           name: recipeName
           schema:
@@ -36,15 +36,15 @@ paths:
           description: name of the recipe to be searched
           example: "test name"
       responses:
-        '200':
-          $ref: '#/components/responses/getRecipeByName'
-        '400':
-          $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/getRecipeByName"
+        "400":
+          $ref: "#/components/responses/CRUDError"
 
   /recipe/{recipeId}:
     get:
       description: Returns the recipe by id
-      parameters: 
+      parameters:
         - in: path
           name: recipeId
           schema:
@@ -53,15 +53,15 @@ paths:
           description: id of the recipe to be searched
           example: "630c1668e2b62e561e954087"
       responses:
-        '200':
-          $ref: '#/components/responses/getRecipeById'
-        '400':
-          $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/getRecipeById"
+        "400":
+          $ref: "#/components/responses/CRUDError"
 
   /recipe{recipeId}:
     put:
       description: deletes the recipe with the given id
-      parameters: 
+      parameters:
         - in: path
           name: recipeId
           schema:
@@ -70,36 +70,36 @@ paths:
           description: id of the recipe to be deleted
           example: "63125749010e6b0219ece378"
       responses:
-        '200':
-          $ref: '#/components/responses/putRecipe'
-        '400':
-           $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/putRecipe"
+        "400":
+          $ref: "#/components/responses/CRUDError"
 
   /user:
     post:
       description: Create a new user
       requestBody:
-        $ref: '#/components/requestBodies/createUser'
+        $ref: "#/components/requestBodies/createUser"
       responses:
-        '200':
-          $ref: '#/components/responses/postUser'
-        '400':
-          $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/postUser"
+        "400":
+          $ref: "#/components/responses/CRUDError"
 
     patch:
       description: updates user data by id
       requestBody:
-        $ref: '#/components/requestBodies/updateUser'
+        $ref: "#/components/requestBodies/updateUser"
       responses:
-        '200':
-          $ref: '#/components/responses/patchUser'
-        '400':
-          $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/patchUser"
+        "400":
+          $ref: "#/components/responses/CRUDError"
 
   /user{email}:
     get:
       description: Returns a user with the given email
-      parameters: 
+      parameters:
         - in: path
           name: email
           schema:
@@ -108,15 +108,15 @@ paths:
           description: email of the user to be searched
           example: "testDelete@test.com"
       responses:
-        '200':
-          $ref: '#/components/responses/getUserByEmail'
-        '400':
-          $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/getUserByEmail"
+        "400":
+          $ref: "#/components/responses/CRUDError"
 
   /user/{userId}:
     get:
       description: Returns the user by id
-      parameters: 
+      parameters:
         - in: path
           name: userId
           schema:
@@ -125,15 +125,15 @@ paths:
           description: id of the user to be searched
           example: "630c1668e2b62e561e954087"
       responses:
-        '200':
-          $ref: '#/components/responses/getUserById'
-        '400':
-          $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/getUserById"
+        "400":
+          $ref: "#/components/responses/CRUDError"
 
   /user{userId}:
     put:
       description: deletes the user with the given id
-      parameters: 
+      parameters:
         - in: path
           name: userId
           schema:
@@ -142,10 +142,10 @@ paths:
           description: id of the user to be deleted
           example: "63125749010e6b0219ece378"
       responses:
-        '200':
-          $ref: '#/components/responses/putUser'
-        '400':
-          $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/putUser"
+        "400":
+          $ref: "#/components/responses/CRUDError"
   /user/{userId}/recipes:
     get:
       description: retrieves all the recipes that the user has
@@ -158,14 +158,14 @@ paths:
           description: id of the user to retrieve recipes from
           example: "630ea999f113a432c7007993"
       responses:
-        '200':
-          $ref: '#/components/responses/getUserRecipes'
-        '400':
-          $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/getUserRecipes"
+        "400":
+          $ref: "#/components/responses/CRUDError"
 
   /user/{userId}/myCookbook:
     get:
-      description: retrieves all the users recipes and the recipes 
+      description: retrieves all the users recipes and the recipes
         they have been given via the share functionality
       parameters:
         - in: path
@@ -176,10 +176,10 @@ paths:
           description: id of the user to source the recipes from
           example: "630ea999f113a432c7007993"
       responses:
-        '200':
-          $ref: '#/components/responses/getCookbook'
-        '400':
-          $ref: '#/components/responses/CRUDError'
+        "200":
+          $ref: "#/components/responses/getCookbook"
+        "400":
+          $ref: "#/components/responses/CRUDError"
 
   /user/addRecipe:
     post:
@@ -200,9 +200,9 @@ paths:
           description: id of the recipe to be added to the users recipe list
           example: "630c1668e2b62e561e954087"
       responses:
-        '200':
+        "200":
           $ref: "#/components/responses/postAddRecipeToUser"
-        '400':
+        "400":
           $ref: "#/components/responses/CRUDError"
 
   /user/removeRecipe:
@@ -224,9 +224,9 @@ paths:
           description: id of the recipe to be removed from the users recipe list
           example: "630c1668e2b62e561e954087"
       responses:
-        '200':
+        "200":
           $ref: "#/components/responses/postRemoveRecipeFromUser"
-        '400':
+        "400":
           $ref: "#/components/responses/CRUDError"
   /macros:
     get:
@@ -237,13 +237,30 @@ paths:
           schema:
             type: string
           required: true
-          description: Name of the food to calculate macronutrients for
-          example: "beef burrito"
+          description: Food item data to get macro information for
+          example: '{"ingredient": "Chicken Breast", "amount": "4", "unit": "oz"}'
       responses:
-        '200':
+        "200":
           $ref: "#/components/responses/getMacros"
-        '400':
+        "400":
           $ref: "#/components/responses/getMacrosError"
+
+  /recipe/healthInfo:
+    get:
+      description: Retrieve total health info for all ingredients in the recipe per serving
+      parameters:
+        - in: query
+          name: recipeId
+          schema:
+            type: string
+          required: true
+          description: Id of the recipe to get health info from
+          example: "630c1668e2b62e561e954087"
+      responses:
+        "200":
+          $ref: "#/components/responses/getHealthInfo"
+        "400":
+          $ref: "#/components/responses/getHealthInfoError"
 
 servers:
   # Added by API Auto Mocking Plugin
@@ -256,7 +273,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/createRecipe'
+            $ref: "#/components/schemas/createRecipe"
           example:
             name: test name 2
             numServings: 4
@@ -273,31 +290,30 @@ components:
                 amount: 4
                 unit: oz
             users:
-              - '630ea999f113a432c7007993'
+              - "630ea999f113a432c7007993"
             tags:
               - chicken
-            
-    
+
     updateRecipe:
       description: request body to update a recipe
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/updateRecipe'
+            $ref: "#/components/schemas/updateRecipe"
 
     createUser:
       description: request body to create a user
-      content: 
+      content:
         application/json:
           schema:
-            $ref: '#/components/schemas/createUser'
+            $ref: "#/components/schemas/createUser"
 
     updateUser:
       description: request body to update a user
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/updateUser'
+            $ref: "#/components/schemas/updateUser"
 
   responses:
     CRUDError:
@@ -579,7 +595,7 @@ components:
             status: Updated
 
     getMacrosError:
-      description: error response for failing to get macro nutrients ofn an unknown food
+      description: error response for failing to get macro nutrients of an an unknown food
       content:
         application/json:
           example:
@@ -611,24 +627,93 @@ components:
                   Content-Type: application/json
                   x-app-id: 15fe543b
                   x-app-key: 672ebb4e299069b677de3628b1c963e7
-                  x-remote-user-id: '0'
+                  x-remote-user-id: "0"
                   User-Agent: axios/0.27.2
-                  Content-Length: 16
+                  Content-Length: 20
                 method: post
                 url: https://trackapi.nutritionix.com/v2/natural/nutrients
-                data: '{"query":"v vk"}'
+                data: '{"query":"dfnjsnfo"}'
               code: ERR_BAD_REQUEST
               status: 404
-    
+
     getMacros:
       description: successful retrieval of macronutrient breakdown from food item
       content:
         application/json:
           example:
-            calories: 198
-            carbs: 0
-            fat: 20
-            protein: 79
+            isSuccessful: true
+            wasFound: true
+            wasUpdated: false
+            wasDeleted: false
+            status: Retrieved
+            calories: 187
+            carbs:
+              total: 0
+              percentage: 0
+            fat:
+              total: 4
+              percentage: 20.45
+            protein:
+              total: 35
+              percentage: 79.55
+
+    getHealthInfo:
+      description: successful retrieval of recipe health info
+      content:
+        application/json:
+          example:
+            isSuccessful: true,
+            wasFound: true,
+            wasUpdated: false,
+            wasDeleted: false,
+            status: Retrieved,
+            macroData:
+              carbs:
+                total: 28.5,
+                percentage: 66.18
+              fat:
+                total: 1.25,
+                percentage: 6.53
+              protein":
+                total: 11.75,
+                percentage: 27.29
+              calories: 179
+
+    getHealthInfoError:
+      description: Error retrieving health info with bad recipe id
+      content:
+        application/json:
+          example:
+            isSuccessful: false
+            wasFound: false
+            wasUpdated: false
+            wasDeleted: false
+            status: CRUD Error
+            err:
+              message: Request failed with status code 400
+              name: AxiosError
+              config:
+                transitional:
+                  silentJSONParsing: true
+                  forcedJSONParsing: true
+                  clarifyTimeoutError: false
+                transformRequest:
+                  - null
+                transformResponse:
+                  - null
+                timeout: 0
+                xsrfCookieName: XSRF-TOKEN
+                xsrfHeaderName: X-XSRF-TOKEN
+                maxContentLength: -1
+                maxBodyLength: -1
+                env: {}
+                headers:
+                  Accept: application/json, text/plain, */*
+                  User-Agent: axios/0.27.2
+                method: get
+                url: http://localhost:9001/api/recipe/630c1668e2b62e561e952652
+              code: ERR_BAD_REQUEST
+              status: 400
 
   schemas:
     createRecipe:
@@ -641,7 +726,7 @@ components:
         - visibility
         - ingredients
       properties:
-        name: 
+        name:
           type: string
           example: "test name"
         numServings:
@@ -651,21 +736,21 @@ components:
           type: array
           items:
             type: string
-          example: 
+          example:
             - step 1
             - step 2
             - step 3
             - step 4
-        imageUrl: 
+        imageUrl:
           type: string
           example: "https://www.thisistheimageurl.com/image1"
-        owner: 
+        owner:
           type: string
           example: "630ea999f113a432c7007993"
         visibility:
           type: string
           example: "Private"
-        ingredients: 
+        ingredients:
           type: array
           items:
             type: object
@@ -690,29 +775,29 @@ components:
             type: string
             example: "chicken"
 
-    updateRecipe: 
+    updateRecipe:
       properties:
-        id: 
+        id:
           type: string
           example: "630c1668e2b62e561e954087"
-        name: 
+        name:
           type: string
           example: "updated test name"
-        numServings: 
+        numServings:
           type: number
           example: 4
-        steps: 
+        steps:
           type: array
           items:
             type: string
           example: ["updated steps"]
-        imageUrl: 
+        imageUrl:
           type: string
           example: "new image url"
-        owner: 
+        owner:
           type: string
           example: "630ea999f113a432c7007993"
-    
+
     createUser:
       required:
         - email
@@ -749,37 +834,37 @@ components:
             type: string
             example: "630c1668e2b62e561e954087"
 
-    updateUser: 
+    updateUser:
       properties:
-        id: 
+        id:
           type: string
           example: "630ea999f113a432c7007993"
-        email: 
+        email:
           type: string
           example: "updatedTest@test.com"
         name:
           type: object
           properties:
-            prefix: 
+            prefix:
               type: string
               example: "Ms."
-            firstName: 
+            firstName:
               type: string
               example: "Jane"
-            middleName: 
+            middleName:
               type: string
               example: "A."
-            lastName: 
+            lastName:
               type: string
               example: "Doe"
-            suffix: 
+            suffix:
               type: string
               example: "Jr."
-        recipes: 
+        recipes:
           type: array
           items:
             type: string
             example: "630fd1c6927570d2dd476403"
-        password: 
+        password:
           type: string
           example: "Abc12345!"
